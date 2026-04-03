@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GCA Search Visibility Roadmap — SEO · AIO · GEO</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --teal-50: #E1F5EE; --teal-100: #9FE1CB; --teal-200: #5DCAA5;
+    --teal-400: #1D9E75; --teal-600: #0F6E56; --teal-800: #085041; --teal-900: #04342C;
+    --purple-50: #EEEDFE; --purple-100: #CECBF6; --purple-200: #AFA9EC;
+    --purple-400: #7F77DD; --purple-600: #534AB7; --purple-800: #3C3489; --purple-900: #26215C;
+    --amber-50: #FAEEDA; --amber-100: #FAC775; --amber-200: #EF9F27;
+    --amber-400: #BA7517; --amber-600: #854F0B; --amber-800: #633806; --amber-900: #412402;
+    --coral-50: #FAECE7; --coral-100: #F5C4B3; --coral-200: #F0997B;
+    --coral-400: #D85A30; --coral-600: #993C1D; --coral-800: #712B13; --coral-900: #4A1B0C;
+    --blue-50: #E6F1FB; --blue-100: #B5D4F4; --blue-200: #85B7EB;
+    --blue-400: #378ADD; --blue-600: #185FA5; --blue-800: #0C447C; --blue-900: #042C53;
+    --gray-50: #F1EFE8; --gray-100: #D3D1C7; --gray-200: #B4B2A9;
+    --gray-400: #888780; --gray-600: #5F5E5A; --gray-800: #444441; --gray-900: #2C2C2A;
+
+    --bg: #ffffff;
+    --bg2: #F8F7F4;
+    --border: rgba(0,0,0,0.1);
+    --text: #1a1a18;
+    --text2: #5F5E5A;
+    --text3: #888780;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1e1e1c; --bg2: #252522; --border: rgba(255,255,255,0.1);
+      --text: #e8e6df; --text2: #B4B2A9; --text3: #888780;
+      --teal-50: #04342C; --teal-100: #085041; --teal-200: #0F6E56;
+      --teal-400: #1D9E75; --teal-600: #5DCAA5; --teal-800: #9FE1CB; --teal-900: #E1F5EE;
+      --purple-50: #26215C; --purple-100: #3C3489; --purple-200: #534AB7;
+      --purple-400: #7F77DD; --purple-600: #AFA9EC; --purple-800: #CECBF6; --purple-900: #EEEDFE;
+      --amber-50: #412402; --amber-100: #633806; --amber-200: #854F0B;
+      --amber-400: #BA7517; --amber-600: #EF9F27; --amber-800: #FAC775; --amber-900: #FAEEDA;
+      --coral-50: #4A1B0C; --coral-100: #712B13; --coral-200: #993C1D;
+      --coral-400: #D85A30; --coral-600: #F0997B; --coral-800: #F5C4B3; --coral-900: #FAECE7;
+      --blue-50: #042C53; --blue-100: #0C447C; --blue-200: #185FA5;
+      --blue-400: #378ADD; --blue-600: #85B7EB; --blue-800: #B5D4F4; --blue-900: #E6F1FB;
+      --gray-50: #2C2C2A; --gray-100: #444441; --gray-200: #5F5E5A;
+      --gray-400: #888780; --gray-600: #B4B2A9; --gray-800: #D3D1C7; --gray-900: #F1EFE8;
+    }
+  }
+
+  body {
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 0;
+  }
+
+  .nav {
+    display: flex; justify-content: center; gap: 4px; padding: 16px 24px 0;
+    border-bottom: 0.5px solid var(--border);
+    background: var(--bg); position: sticky; top: 0; z-index: 100; flex-wrap: wrap;
+  }
+  .nav-btn {
+    font-family: inherit; font-size: 12px; font-weight: 500;
+    padding: 8px 14px; border: none; background: transparent; color: var(--text3);
+    cursor: pointer; border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    border-bottom: 2px solid transparent; margin-bottom: -0.5px;
+    transition: all 0.15s; white-space: nowrap;
+  }
+  .nav-btn:hover { color: var(--text); background: var(--bg2); }
+  .nav-btn.active { color: var(--teal-400); border-bottom-color: var(--teal-400); background: var(--bg); }
+
+  .page { display: none; padding: 32px 24px; max-width: 1000px; margin: 0 auto; }
+  .page.active { display: block; }
+
+  .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--teal-400); margin-bottom: 6px; }
+  h1 { font-size: 28px; font-weight: 600; line-height: 1.2; color: var(--text); margin-bottom: 8px; }
+  h2 { font-size: 20px; font-weight: 600; color: var(--text); margin-bottom: 16px; }
+  h3 { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
+  p { font-size: 14px; color: var(--text2); margin-bottom: 12px; line-height: 1.7; }
+  .lead { font-size: 16px; color: var(--text2); line-height: 1.7; margin-bottom: 24px; }
+
+  .card { background: var(--bg); border: 0.5px solid var(--border); border-radius: var(--radius); padding: 20px; margin-bottom: 16px; }
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
+  @media (max-width: 600px) { .card-grid { grid-template-columns: 1fr; } }
+
+  .badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .badge-teal { background: var(--teal-50); color: var(--teal-600); }
+  .badge-purple { background: var(--purple-50); color: var(--purple-600); }
+  .badge-amber { background: var(--amber-50); color: var(--amber-600); }
+  .badge-coral { background: var(--coral-50); color: var(--coral-600); }
+  .badge-blue { background: var(--blue-50); color: var(--blue-600); }
+
+  .phase-card { border-radius: var(--radius); border: 0.5px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+  .phase-header { padding: 20px 24px 16px; display: flex; align-items: flex-start; gap: 16px; }
+  .phase-num { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; flex-shrink: 0; }
+  .phase-body { padding: 0 24px 20px; }
+  .phase-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .phase-timeline { font-size: 12px; color: var(--text3); font-weight: 500; }
+
+  .ph1 .phase-header { background: var(--teal-50); }
+  .ph1 .phase-num { background: var(--teal-400); color: white; }
+  .ph1 .phase-title { color: var(--teal-800); }
+  .ph2 .phase-header { background: var(--purple-50); }
+  .ph2 .phase-num { background: var(--purple-400); color: white; }
+  .ph2 .phase-title { color: var(--purple-800); }
+  .ph3 .phase-header { background: var(--amber-50); }
+  .ph3 .phase-num { background: var(--amber-400); color: white; }
+  .ph3 .phase-title { color: var(--amber-800); }
+  .ph4 .phase-header { background: var(--coral-50); }
+  .ph4 .phase-num { background: var(--coral-400); color: white; }
+  .ph4 .phase-title { color: var(--coral-800); }
+  .ph5 .phase-header { background: var(--blue-50); }
+  .ph5 .phase-num { background: var(--blue-400); color: white; }
+  .ph5 .phase-title { color: var(--blue-800); }
+
+  .divider { height: 0.5px; background: var(--border); margin: 20px 0; }
+
+  .checklist { list-style: none; margin: 0; padding: 0; }
+  .checklist li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text2); padding: 6px 0; border-bottom: 0.5px solid var(--border); line-height: 1.5; }
+  .checklist li:last-child { border-bottom: none; }
+  .check-icon { width: 16px; height: 16px; flex-shrink: 0; background: var(--teal-50); border-radius: 4px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+  .check-icon svg { width: 10px; height: 10px; stroke: var(--teal-600); }
+
+  .tool-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 4px 10px; background: var(--bg2); border: 0.5px solid var(--border); border-radius: 20px; color: var(--text2); margin: 3px; font-family: 'DM Mono', monospace; }
+  .tool-pill.free { border-color: var(--teal-200); color: var(--teal-600); }
+  .tool-pill.paid { border-color: var(--amber-200); color: var(--amber-600); }
+
+  .metric-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .metric-table th { text-align: left; padding: 8px 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text3); border-bottom: 0.5px solid var(--border); }
+  .metric-table td { padding: 10px 12px; border-bottom: 0.5px solid var(--border); color: var(--text2); vertical-align: top; line-height: 1.5; }
+  .metric-table tr:last-child td { border-bottom: none; }
+  .metric-table td:first-child { font-weight: 500; color: var(--text); }
+
+  .kpi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px; }
+  @media (max-width: 600px) { .kpi-grid { grid-template-columns: 1fr 1fr; } }
+  .kpi-card { background: var(--bg2); border-radius: var(--radius-sm); padding: 14px 16px; text-align: center; }
+  .kpi-num { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+  .kpi-label { font-size: 11px; color: var(--text3); font-weight: 500; text-transform: uppercase; letter-spacing: 0.06em; }
+
+  .gloss-item { padding: 14px 0; border-bottom: 0.5px solid var(--border); }
+  .gloss-item:last-child { border-bottom: none; }
+  .gloss-term { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+  .gloss-def { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+  .info-box { border-radius: var(--radius-sm); padding: 14px 16px; margin: 16px 0; font-size: 13px; line-height: 1.6; border-left: 3px solid; }
+  .info-box.teal { background: var(--teal-50); border-color: var(--teal-400); color: var(--teal-800); }
+  .info-box.amber { background: var(--amber-50); border-color: var(--amber-400); color: var(--amber-800); }
+  .info-box strong { font-weight: 600; }
+
+  .cover { min-height: 260px; background: linear-gradient(135deg, var(--teal-400) 0%, var(--purple-400) 100%); border-radius: var(--radius); padding: 48px 40px; margin-bottom: 32px; position: relative; overflow: hidden; }
+  .cover::after { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+  .cover-content { position: relative; z-index: 1; }
+  .cover h1 { color: white; font-size: 32px; font-weight: 700; margin-bottom: 12px; }
+  .cover .sub { color: rgba(255,255,255,0.8); font-size: 15px; max-width: 500px; line-height: 1.6; }
+  .cover-meta { margin-top: 28px; display: flex; gap: 20px; flex-wrap: wrap; }
+  .cover-meta-item { background: rgba(255,255,255,0.15); border-radius: var(--radius-sm); padding: 8px 14px; font-size: 12px; font-weight: 500; color: white; }
+  .cover-meta-item span { opacity: 0.7; display: block; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 2px; }
+
+  .gantt { width: 100%; margin: 20px 0; }
+  .gantt-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .gantt-label { font-size: 12px; color: var(--text2); min-width: 120px; font-weight: 500; }
+  .gantt-bar-wrap { flex: 1; background: var(--bg2); border-radius: 4px; height: 24px; position: relative; }
+  .gantt-bar { position: absolute; top: 0; height: 100%; border-radius: 4px; display: flex; align-items: center; padding: 0 8px; font-size: 11px; font-weight: 500; color: white; white-space: nowrap; }
+
+  .section-title { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text3); margin: 28px 0 12px; }
+
+  .compare-wrap { overflow-x: auto; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 560px; }
+  .compare-table th { padding: 10px 14px; font-size: 12px; font-weight: 600; text-align: left; border-bottom: 0.5px solid var(--border); color: var(--text); }
+  .compare-table th:first-child { color: var(--text3); font-weight: 500; text-transform: uppercase; font-size: 11px; }
+  .compare-table td { padding: 10px 14px; border-bottom: 0.5px solid var(--border); color: var(--text2); vertical-align: top; line-height: 1.5; }
+  .compare-table tr:last-child td { border-bottom: none; }
+  .compare-table td:first-child { font-weight: 500; color: var(--text3); font-size: 12px; }
+  .col-seo { background: var(--blue-50); }
+  .col-geo { background: var(--teal-50); }
+
+  .footer {
+    display: flex; justify-content: center; padding: 32px 24px; margin-top: 60px;
+    border-top: 0.5px solid var(--border); background: var(--bg);
+    color: var(--text3); font-size: 11px; font-weight: 500; letter-spacing: 0.02em;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <button class="nav-btn active" onclick="show('overview', this)">Overview</button>
+  <button class="nav-btn" onclick="show('glossary', this)">Terminology</button>
+  <button class="nav-btn" onclick="show('phase1', this)">Phase 1 — SEO</button>
+  <button class="nav-btn" onclick="show('phase2', this)">Phase 2 — AIO</button>
+  <button class="nav-btn" onclick="show('phase3', this)">Phase 3 — GEO</button>
+  <button class="nav-btn" onclick="show('phase4', this)">Phase 4 — Authority</button>
+  <button class="nav-btn" onclick="show('phase5', this)">Phase 5 — Engineering</button>
+  <button class="nav-btn" onclick="show('metrics', this)">Metrics</button>
+  <button class="nav-btn" onclick="show('compare', this)">SEO vs GEO</button>
+</nav>
+
+<!-- OVERVIEW -->
+<div class="page active" id="overview">
+  <div class="cover">
+    <div class="cover-content">
+      <div class="eyebrow" style="color:rgba(255,255,255,0.7)">Strategic Proposal — 3rd April 2026</div>
+      <h1>Search Visibility Roadmap<br>for Global Careers Africa</h1>
+      <p class="sub">A phased plan to establish GCA as the cited authority on African talent sourcing — across traditional search, AI Overviews, and generative engines.</p>
+      <div class="cover-meta">
+        <div class="cover-meta-item"><span>Phases</span>5 stages</div>
+        <div class="cover-meta-item"><span>Timeline</span>18 months</div>
+        <div class="cover-meta-item"><span>Approach</span>SEO → AIO → GEO</div>
+        <div class="cover-meta-item"><span>Priority</span>Content-first</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="eyebrow">Why this matters now</div>
+  <h2>The discovery landscape has fundamentally changed</h2>
+  <p class="lead">When a hiring manager asks ChatGPT <em>"What's the best way to hire talent from Africa?"</em> — is Global Careers Africa in that answer? Today, almost certainly not. This roadmap changes that, systematically.</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-num" style="color:var(--coral-400)">4–7%</div><div class="kpi-label">SEO metrics explain AI citations</div></div>
+    <div class="kpi-card"><div class="kpi-num" style="color:var(--amber-400)">25%</div><div class="kpi-label">Top-10 Google pages cited by AI</div></div>
+    <div class="kpi-card"><div class="kpi-num" style="color:var(--teal-400)">28%</div><div class="kpi-label">AI-cited pages not in Google index</div></div>
+  </div>
+
+  <p>These statistics make one thing clear: traditional SEO alone will not get GCA cited in AI-generated answers. A new layer of strategy — Generative Engine Optimisation — must run alongside it.</p>
+
+  <div class="info-box teal"><strong>GCA's competitive opportunity:</strong> The niche of "vetted African talent for international employers" is largely unclaimed in AI search. A consistent, structured content strategy over 12–18 months can establish GCA as the default cited authority in this category.</div>
+
+  <div class="section-title">Roadmap at a glance</div>
+  <div class="gantt">
+    <div class="gantt-row"><div class="gantt-label">Phase 1 — SEO Foundations</div><div class="gantt-bar-wrap"><div class="gantt-bar" style="left:0%;width:22%;background:var(--teal-400)">Months 1–2</div></div></div>
+    <div class="gantt-row"><div class="gantt-label">Phase 2 — AIO Readiness</div><div class="gantt-bar-wrap"><div class="gantt-bar" style="left:18%;width:28%;background:var(--purple-400)">Months 2–5</div></div></div>
+    <div class="gantt-row"><div class="gantt-label">Phase 3 — GEO Content</div><div class="gantt-bar-wrap"><div class="gantt-bar" style="left:33%;width:33%;background:var(--amber-400)">Months 4–8</div></div></div>
+    <div class="gantt-row"><div class="gantt-label">Phase 4 — Authority</div><div class="gantt-bar-wrap"><div class="gantt-bar" style="left:55%;width:28%;background:var(--coral-400)">Months 7–11</div></div></div>
+    <div class="gantt-row"><div class="gantt-label">Phase 5 — Engineering</div><div class="gantt-bar-wrap"><div class="gantt-bar" style="left:72%;width:28%;background:var(--blue-400)">Months 10–18</div></div></div>
+  </div>
+  <p style="font-size:12px;color:var(--text3);margin-top:-8px">Phases overlap intentionally. Later phases build on earlier foundations.</p>
+
+  <div class="divider"></div>
+  <div class="card-grid">
+    <div class="card">
+      <div class="eyebrow">Current state</div>
+      <h3>Where GCA is today</h3>
+      <ul class="checklist">
+        <li><div class="check-icon" style="background:var(--coral-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5h6" stroke="var(--coral-400)" stroke-width="1.5" stroke-linecap="round"/></svg></div>Thin page content, mostly image-based</li>
+        <li><div class="check-icon" style="background:var(--coral-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5h6" stroke="var(--coral-400)" stroke-width="1.5" stroke-linecap="round"/></svg></div>No blog or long-form resources</li>
+        <li><div class="check-icon" style="background:var(--coral-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5h6" stroke="var(--coral-400)" stroke-width="1.5" stroke-linecap="round"/></svg></div>Meta titles not keyword-optimised</li>
+        <li><div class="check-icon" style="background:var(--coral-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5h6" stroke="var(--coral-400)" stroke-width="1.5" stroke-linecap="round"/></svg></div>No schema markup</li>
+        <li><div class="check-icon" style="background:var(--coral-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5h6" stroke="var(--coral-400)" stroke-width="1.5" stroke-linecap="round"/></svg></div>Not appearing in AI-generated answers</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="eyebrow">Target state (18 months)</div>
+      <h3>Where GCA should be</h3>
+      <ul class="checklist">
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Cited in AI answers for key hiring queries</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>20+ structured, AI-readable content pages</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Full schema implementation</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Measurable AI citation tracking</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Ranking for core talent sourcing queries</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- GLOSSARY -->
+<div class="page" id="glossary">
+  <div class="eyebrow">Key terminology</div>
+  <h2>Understanding the Landscape</h2>
+  <p class="lead">Three overlapping disciplines. Each has distinct mechanics, goals, and measurement approaches. Understanding the difference is the foundation of this strategy.</p>
+  <div class="card">
+    <div class="gloss-item"><div class="gloss-term"><span class="badge badge-blue" style="margin-right:8px">SEO</span> Search Engine Optimisation</div><div class="gloss-def">The practice of improving a website's visibility in traditional search engine results pages (SERPs). Built on signals like keywords, backlinks, technical health, site speed, and E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness). Goal: rank higher in a list of links. Still foundational — AI systems rely on indexed web content as a key input. <strong>Cannot be skipped.</strong></div></div>
+    <div class="gloss-item"><div class="gloss-term"><span class="badge badge-purple" style="margin-right:8px">AIO</span> AI Overview Optimisation</div><div class="gloss-def">Optimising to appear in Google's AI Overviews — the AI-generated summaries that appear above traditional results. Sits between SEO and GEO: it still relies heavily on traditional Google signals but rewards answer-first, clearly structured content. Appearing in AIO means being in Google's summary before anyone sees the blue links.</div></div>
+    <div class="gloss-item"><div class="gloss-term"><span class="badge badge-teal" style="margin-right:8px">GEO</span> Generative Engine Optimisation</div><div class="gloss-def">Optimising to be cited or synthesised by AI platforms like ChatGPT, Perplexity, Claude, and Gemini. <strong>Not the same as SEO.</strong> Standard SEO metrics explain only 4–7% of citation variance in ChatGPT. GEO rewards: topical depth, clear explanatory prose, structured authority, consistent brand-topic association, and original data. Goal: be included in the answer, not just ranked.</div></div>
+    <div class="gloss-item"><div class="gloss-term"><span class="badge badge-amber" style="margin-right:8px">E-E-A-T</span> Experience, Expertise, Authoritativeness, Trustworthiness</div><div class="gloss-def">Google's quality framework for evaluating content credibility. Still relevant to GEO — AI systems prefer sources that demonstrate genuine subject-matter expertise and are consistently cited by others. For GCA, this means showcasing the verification process, industry partnerships (RCSA, ILO, GIZ), and real hiring outcomes.</div></div>
+    <div class="gloss-item"><div class="gloss-term"><span class="badge badge-coral" style="margin-right:8px">Schema</span> Structured Data / JSON-LD</div><div class="gloss-def">Machine-readable code added to web pages that explicitly tells search engines and AI systems what content means. Types relevant to GCA: Organization, FAQ, HowTo, Article, DefinedTerm. Injected as JSON-LD in the page head or via Squarespace code blocks. Schema is how you make your content AI-parseable beyond plain text.</div></div>
+    <div class="gloss-item"><div class="gloss-term"><span class="badge badge-blue" style="margin-right:8px">EOR</span> Employer of Record</div><div class="gloss-def">A third-party organisation that legally employs staff on behalf of a company in another country, handling contracts, payroll, tax, and compliance. GCA's model includes an EOR layer — a critical concept for international hiring content and a high-traffic query category GCA should own.</div></div>
+    <div class="gloss-item"><div class="gloss-term"><span class="badge badge-teal" style="margin-right:8px">Prompt mapping</span> AI Query Research</div><div class="gloss-def">The GEO equivalent of keyword research. Instead of finding search volumes for terms, you identify the natural language questions buyers are typing into AI tools. Content is then engineered to directly answer these prompts.</div></div>
+    <div class="gloss-item"><div class="gloss-term"><span class="badge badge-purple" style="margin-right:8px">Citation variance</span> Why AI cites what it cites</div><div class="gloss-def">Research shows only 4–7% of AI citation patterns are explained by traditional SEO metrics. The rest is driven by contextual relevance, semantic depth, consistency across sources, and authority signals that go beyond backlinks. This is why a dedicated GEO strategy is required alongside SEO.</div></div>
+  </div>
+</div>
+
+<!-- PHASE 1 -->
+<div class="page" id="phase1">
+  <div class="phase-card ph1">
+    <div class="phase-header">
+      <div class="phase-num">1</div>
+      <div><div class="phase-title">SEO Foundations</div><div class="phase-timeline">Months 1–2 · Must complete before other phases can compound</div></div>
+      <div style="margin-left:auto"><span class="badge badge-teal">Priority: Critical</span></div>
+    </div>
+    <div class="phase-body">
+      <p>Everything else depends on this. Technical SEO is the infrastructure that AI systems rely on when deciding which brands to reference. Without it, GEO content has weaker foundations. This phase requires no expensive tools — primarily Google's free suite and one crawl tool.</p>
+      <div class="info-box teal"><strong>Core principle:</strong> AI systems often start from indexed web content. A site with broken links, slow load times, and missing meta data sends weak trust signals to both Google and AI engines.</div>
+      <div class="section-title">Actionable steps</div>
+      <ul class="checklist">
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Submit sitemap to Google Search Console</strong> — verify ownership and submit sitemap.xml. Free. Takes 30 minutes. Baseline requirement.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Rewrite all page meta titles and descriptions</strong> — every page needs a descriptive, keyword-intentional title. E.g. "Hire Vetted African Talent Globally | Global Careers Africa" not "Home".</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Crawl the site with Screaming Frog</strong> — identify 404s, redirect chains, missing alt tags, duplicate titles. Fix before building new content.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Check Core Web Vitals</strong> — use Google PageSpeed Insights. Fast FCP/TTI improves AI citation probability.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Expand thin pages to 400+ words of prose</strong> — homepage, Smartsourcing, Build a Global Team, Why Africa, Verification Promise. AI cannot synthesise image-heavy pages.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Add Organization schema to homepage</strong> — inject JSON-LD defining GCA's name, URL, founding, services, and partner organisations via Squarespace code injection.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Build a keyword map</strong> — 30–50 priority queries using Google Search Console, AlsoAsked.com, and AnswerThePublic. Map each to an existing or planned page.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Write partner credibility in prose</strong> — RCSA, ILO, GIZ, Rendeavour are shown as logos only. AI cannot read images. Write a 150-word explanation of each partnership.</div></li>
+      </ul>
+      <div class="section-title">Tools at this phase</div>
+      <div>
+        <span class="tool-pill free">✓ Google Search Console</span>
+        <span class="tool-pill free">✓ Google Analytics 4</span>
+        <span class="tool-pill free">✓ PageSpeed Insights</span>
+        <span class="tool-pill free">✓ AlsoAsked.com</span>
+        <span class="tool-pill free">✓ AnswerThePublic</span>
+        <span class="tool-pill paid">$ Screaming Frog (free up to 500 URLs)</span>
+        <span class="tool-pill paid">$ Ahrefs / Semrush (optional)</span>
+      </div>
+      <div class="section-title">Measurable outcomes</div>
+      <table class="metric-table">
+        <tr><th>Metric</th><th>Target</th><th>How to measure</th></tr>
+        <tr><td>Indexed pages</td><td>All key pages confirmed indexed</td><td>Google Search Console → Coverage</td></tr>
+        <tr><td>Page speed</td><td>LCP under 2.5s on mobile</td><td>PageSpeed Insights</td></tr>
+        <tr><td>Meta completeness</td><td>100% of pages have unique title + description</td><td>Screaming Frog crawl</td></tr>
+        <tr><td>Content depth</td><td>Core pages 400+ words</td><td>Manual word count</td></tr>
+        <tr><td>Schema</td><td>Organization schema live on homepage</td><td>Google Rich Results Test</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 2 -->
+<div class="page" id="phase2">
+  <div class="phase-card ph2">
+    <div class="phase-header">
+      <div class="phase-num">2</div>
+      <div><div class="phase-title">AIO Readiness — Google AI Overviews</div><div class="phase-timeline">Months 2–5 · Runs alongside Phase 1 content work</div></div>
+      <div style="margin-left:auto"><span class="badge badge-purple">Priority: High</span></div>
+    </div>
+    <div class="phase-body">
+      <p>Google's AI Overviews appear above organic results for many queries and still lean on traditional SEO signals — but require answer-first content structure. Winning here is the most accessible AI visibility target because GCA's core SEO work feeds directly into it.</p>
+      <div class="info-box teal"><strong>Key insight:</strong> ChatGPT rewards depth and topical consistency. Perplexity pulls from fresh, niche, and forum-style content. Google AI Overviews still lean on traditional SEO signals. AIO is the bridge — optimising for it improves both traditional and AI performance simultaneously.</div>
+      <div class="section-title">Prompt mapping — build your AI keyword list</div>
+      <p>Before writing a single word, map the 30–50 questions your buyers are asking AI tools. Examples for GCA:</p>
+      <ul class="checklist">
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>"What are the best platforms to hire African talent?"</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>"How do I hire compliantly in Kenya / Nigeria / South Africa?"</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>"What is an Employer of Record and do I need one for Africa?"</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>"How does outsourcing to Africa compare to India or Eastern Europe?"</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>"As an Australian company, how can I hire engineers from Africa?"</li>
+      </ul>
+      <div class="section-title">Content structure for AIO</div>
+      <ul class="checklist">
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>First sentence = direct answer</strong> — no preamble. Just answer. E.g. "Global Careers Africa is a talent platform connecting international employers with pre-vetted African professionals."</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Use questions as H2 headings</strong> — "How does the verification process work?" not "Our Process".</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Add FAQ schema to every information page</strong> — the single highest-impact technical change for AIO.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Concrete facts over claims</strong> — "GCA vets the top 5% of applicants across a 7-stage process" beats "We find the best talent".</div></li>
+      </ul>
+      <div class="section-title">Tools at this phase</div>
+      <div>
+        <span class="tool-pill free">✓ AlsoAsked.com</span>
+        <span class="tool-pill free">✓ Google People Also Ask</span>
+        <span class="tool-pill free">✓ Google Rich Results Test</span>
+        <span class="tool-pill free">✓ schema.org markup generator</span>
+        <span class="tool-pill paid">$ Semrush AI Overview tracker</span>
+        <span class="tool-pill free">✓ Manual: test prompts in Google weekly</span>
+      </div>
+      <div class="section-title">Measurable outcomes</div>
+      <table class="metric-table">
+        <tr><th>Metric</th><th>Target</th><th>How to measure</th></tr>
+        <tr><td>FAQ schema live</td><td>All information pages have FAQ schema</td><td>Google Rich Results Test</td></tr>
+        <tr><td>AIO appearances</td><td>Appearing in at least 3 AI Overviews for target queries</td><td>Manual Google checks weekly</td></tr>
+        <tr><td>Prompt coverage</td><td>Mapped 50 buyer prompts to content</td><td>Internal spreadsheet</td></tr>
+        <tr><td>Answer-first pages</td><td>All key pages open with direct answer</td><td>Manual content audit</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 3 -->
+<div class="page" id="phase3">
+  <div class="phase-card ph3">
+    <div class="phase-header">
+      <div class="phase-num">3</div>
+      <div><div class="phase-title">GEO Content Programme</div><div class="phase-timeline">Months 4–8 · The core content investment</div></div>
+      <div style="margin-left:auto"><span class="badge badge-amber">Priority: High</span></div>
+    </div>
+    <div class="phase-body">
+      <p>This is the highest-leverage phase. The research is clear: standard SEO explains only 4–7% of AI citation variance. What explains the rest is content that is deep, structured, authoritative, and consistently associated with a specific topic.</p>
+      <div class="info-box amber"><strong>Constraint reminder:</strong> The bottleneck at this stage is content, not tooling. Every week spent evaluating GEO platforms without publishing new content is a week of competitive ground conceded.</div>
+      <div class="section-title">The 5 content types AI engines cite most</div>
+      <div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span class="badge badge-teal">Type 1</span><h3 style="margin:0">Definition pages</h3></div><p>Clearly explain core concepts. First sentence = the definition. These become the pages AI cites when a user asks "what is X?"</p><p><strong>GCA examples:</strong> "What is an EOR in Africa?" · "What is the Global Careers Africa Programme?" · "What is smartsourcing?" · "What does talent verification mean?"</p></div>
+      <div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span class="badge badge-purple">Type 2</span><h3 style="margin:0">Comparison pages</h3></div><p>AI systems frequently generate "top platforms include X, Y, Z" answers. Comparison content positions GCA within these lists.</p><p><strong>GCA examples:</strong> "Hiring African talent vs. India vs. Eastern Europe" · "GCA vs. Deel vs. Remote for African hiring" · "Best ways to hire remote talent in Africa (2026)"</p></div>
+      <div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span class="badge badge-amber">Type 3</span><h3 style="margin:0">Process / how-to guides</h3></div><p>Decision-stage content that maps directly to the prompts buyers type into AI. Long-form, step-by-step, with numbered sections that AI can extract cleanly.</p><p><strong>GCA examples:</strong> "How to hire remote developers in Kenya from Australia" · "How to build a global team from Africa compliantly" · "How the GCA verification process works — 7 stages explained"</p></div>
+      <div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span class="badge badge-coral">Type 4</span><h3 style="margin:0">Data and benchmark pages</h3></div><p>AI systems strongly favour original data, statistics, and structured facts. Even rough-but-honest benchmarks are more citable than marketing claims.</p><p><strong>GCA examples:</strong> "African professional salary benchmarks 2026" · "Talent availability by country: Kenya, Nigeria, South Africa, Ghana" · "Remote hiring timelines: Africa vs. traditional markets"</p></div>
+      <div class="card" style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:8px"><span class="badge badge-blue">Type 5</span><h3 style="margin:0">Glossary / knowledge base</h3></div><p>Individual term pages with DefinedTerm schema are a GEO cheat code. Each page owns one query. High citation probability with relatively low content effort.</p><p><strong>GCA examples:</strong> "Employer of Record (EOR) Africa" · "Remote hiring compliance Africa" · "Work permits: Kenya vs. Nigeria vs. South Africa" · "Cross-border payroll Africa"</p></div>
+      <div class="section-title">Content calendar — first 3 months</div>
+      <table class="metric-table">
+        <tr><th>Month</th><th>Pages to publish</th><th>Schema to add</th></tr>
+        <tr><td>Month 4</td><td>EOR definition · "What is GCA?" · Process guide (verification)</td><td>Article, DefinedTerm, HowTo</td></tr>
+        <tr><td>Month 5</td><td>Comparison: Africa vs. India/EE · Kenya hiring guide · Salary benchmarks</td><td>Article, FAQ, Table</td></tr>
+        <tr><td>Month 6</td><td>Glossary pages ×5 · Nigeria hiring guide · "Why Africa?" long-form</td><td>DefinedTerm ×5, Article</td></tr>
+      </table>
+      <div class="section-title">Measurable outcomes</div>
+      <table class="metric-table">
+        <tr><th>Metric</th><th>Target</th><th>How to measure</th></tr>
+        <tr><td>New content pages</td><td>20+ published by end of Phase 3</td><td>CMS page count</td></tr>
+        <tr><td>AI prompt coverage</td><td>Appearing in answers for 10+ of 50 mapped prompts</td><td>Weekly manual testing</td></tr>
+        <tr><td>Organic impressions</td><td>3× increase from Phase 1 baseline</td><td>Google Search Console</td></tr>
+        <tr><td>Competitor gap</td><td>Identified which competitors get cited instead of GCA</td><td>Weekly prompt testing log</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 4 -->
+<div class="page" id="phase4">
+  <div class="phase-card ph4">
+    <div class="phase-header">
+      <div class="phase-num">4</div>
+      <div><div class="phase-title">Authority and Off-Site Signals</div><div class="phase-timeline">Months 7–11 · Amplifies Phase 3 content reach</div></div>
+      <div style="margin-left:auto"><span class="badge badge-coral">Priority: Medium-High</span></div>
+    </div>
+    <div class="phase-body">
+      <p>AI systems evaluate more than your website. They assess how consistently your brand is associated with specific topics across the wider web — partner sites, press coverage, forums, LinkedIn, and third-party platforms.</p>
+      <div class="info-box teal"><strong>Why this matters for GEO:</strong> AI citation patterns are influenced by semantic relationships and consistency across sources. When multiple external sources associate GCA with African talent sourcing, AI models strengthen that association.</div>
+      <div class="section-title">Off-site authority actions</div>
+      <ul class="checklist">
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Partner page text alignment</strong> — ensure RCSA, Worknation, CCI Global, GIZ partner pages describe GCA in consistent language matching your own positioning.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>LinkedIn long-form content</strong> — publish 2 articles/month mirroring site content topics. LinkedIn is indexed by AI systems (especially Perplexity) and creates a second citation surface.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Guest posts on recruitment and HR publications</strong> — one bylined article per month in industry press (RCSA magazine, HR Daily, African Business). Each creates a citation surface with a backlink.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Podcast and media appearances</strong> — Perplexity frequently cites podcast transcripts and news articles. One media appearance per quarter generates citation-worthy content outside your domain.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Client case studies</strong> — specific, outcome-driven: "How [Company] built a 10-person Africa team in 60 days". Highly citable by AI and valuable for traditional SEO.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Wikipedia/Wikidata entity presence</strong> — AI models heavily weight Wikipedia-adjacent sources. A well-sourced mention on relevant Wikipedia pages builds entity recognition.</div></li>
+      </ul>
+      <div class="section-title">Tools at this phase</div>
+      <div>
+        <span class="tool-pill free">✓ LinkedIn Articles</span>
+        <span class="tool-pill free">✓ Google Alerts (brand monitoring)</span>
+        <span class="tool-pill paid">$ Mention.com</span>
+        <span class="tool-pill paid">$ Ahrefs (backlink tracking)</span>
+        <span class="tool-pill free">✓ Manual: Perplexity brand mention checks</span>
+      </div>
+      <div class="section-title">Measurable outcomes</div>
+      <table class="metric-table">
+        <tr><th>Metric</th><th>Target</th><th>How to measure</th></tr>
+        <tr><td>Referring domains</td><td>+15 new quality domains from content/PR</td><td>Ahrefs / Google Search Console</td></tr>
+        <tr><td>Brand mentions</td><td>GCA mentioned in 5+ external AI-indexed sources</td><td>Google Alerts + Mention.com</td></tr>
+        <tr><td>LinkedIn reach</td><td>2 articles/month, 500+ average views</td><td>LinkedIn Analytics</td></tr>
+        <tr><td>Perplexity citations</td><td>Appearing in answers on Perplexity for 5+ prompts</td><td>Weekly manual testing</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- PHASE 5 -->
+<div class="page" id="phase5">
+  <div class="phase-card ph5">
+    <div class="phase-header">
+      <div class="phase-num">5</div>
+      <div><div class="phase-title">Engineering and Automation Layer</div><div class="phase-timeline">Months 10–18 · Only after content foundation is established</div></div>
+      <div style="margin-left:auto"><span class="badge badge-blue">Priority: Future</span></div>
+    </div>
+    <div class="phase-body">
+      <p>This is the phase where technical capability creates a sustainable competitive edge. It is only appropriate once GCA has 20+ content pages, established AI citation presence, and a clear understanding of which prompts drive citations.</p>
+      <div class="info-box amber"><strong>Sequencing matters:</strong> Tools like LangChain, LlamaIndex, and prompt-tracking scripts are powerful — but they optimise content that already exists. The engineering phase amplifies Phase 3 content; it cannot replace it.</div>
+      <div class="section-title">Automated prompt tracking</div>
+      <p>Replace manual weekly testing with a script that runs 50+ prompts against ChatGPT and Perplexity APIs and logs citation presence automatically.</p>
+      <ul class="checklist">
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>LangChain</strong> — orchestrate multi-prompt testing across ChatGPT, Claude, and Perplexity APIs. Log: is GCA mentioned? Position in answer? Framing?</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Python + Google Sheets</strong> — store weekly prompt results in a simple spreadsheet. Track citation rate over time.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>Competitor tracking</strong> — same script logs which domains are cited instead of GCA. Identifies content gaps to close.</div></li>
+      </ul>
+      <div class="section-title">Semantic content analysis</div>
+      <ul class="checklist">
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>sentence-transformers (Python)</strong> — analyse whether GCA content semantically matches the prompts being tracked. Identify topics covered superficially vs. deeply.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>LlamaIndex</strong> — build an internal retrieval layer over GCA content to test AI-readiness before publishing.</div></li>
+      </ul>
+      <div class="section-title">AI-readable content endpoints (advanced)</div>
+      <ul class="checklist">
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>/knowledge/ endpoint</strong> — a structured page summarising GCA's key facts, programme details, and definitions in clean, parseable format. Feeding AI systems directly.</div></li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div><div><strong>llms.txt file</strong> — an emerging standard (similar to robots.txt) that gives AI crawlers structured guidance about your content. Early adoption = early advantage.</div></li>
+      </ul>
+      <div class="section-title">Tools at this phase</div>
+      <div>
+        <span class="tool-pill free">✓ LangChain (open source)</span>
+        <span class="tool-pill free">✓ LlamaIndex (open source)</span>
+        <span class="tool-pill free">✓ sentence-transformers (open source)</span>
+        <span class="tool-pill paid">$ OpenAI / Perplexity API (low cost)</span>
+        <span class="tool-pill paid">$ Semrush AI Visibility toolkit</span>
+        <span class="tool-pill paid">$ BrightEdge / Authoritas (enterprise — Phase 5+ only)</span>
+      </div>
+      <div class="section-title">Measurable outcomes</div>
+      <table class="metric-table">
+        <tr><th>Metric</th><th>Target</th><th>How to measure</th></tr>
+        <tr><td>Prompt tracking automation</td><td>50 prompts tested weekly, automatically logged</td><td>LangChain script output</td></tr>
+        <tr><td>Citation rate</td><td>GCA cited in 25%+ of tracked prompts</td><td>Automated tracking dashboard</td></tr>
+        <tr><td>Semantic coverage</td><td>No major topic gaps vs. top cited competitors</td><td>sentence-transformers analysis</td></tr>
+        <tr><td>AI endpoint live</td><td>/knowledge/ page published and structured</td><td>Manual check + structured data validator</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- METRICS -->
+<div class="page" id="metrics">
+  <div class="eyebrow">Measurement framework</div>
+  <h2>Two Dashboards, One Strategy</h2>
+  <p class="lead">Measuring GEO effectiveness requires a fundamentally different approach to SEO. Both dashboards are required — one without the other gives an incomplete picture of how GCA is performing in the evolving search landscape.</p>
+  <div class="card-grid">
+    <div class="card" style="border-top:3px solid var(--blue-400)">
+      <div class="eyebrow" style="color:var(--blue-600)">Dashboard 1</div>
+      <h3>SEO Metrics</h3>
+      <p>Traditional, platform-supported, reliable attribution.</p>
+      <ul class="checklist">
+        <li><div class="check-icon" style="background:var(--blue-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--blue-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Organic impressions and clicks (Search Console)</li>
+        <li><div class="check-icon" style="background:var(--blue-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--blue-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Keyword rankings for target queries</li>
+        <li><div class="check-icon" style="background:var(--blue-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--blue-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Organic traffic to key pages (GA4)</li>
+        <li><div class="check-icon" style="background:var(--blue-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--blue-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Backlinks and referring domains (Ahrefs)</li>
+        <li><div class="check-icon" style="background:var(--blue-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--blue-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Core Web Vitals scores</li>
+        <li><div class="check-icon" style="background:var(--blue-50)"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--blue-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Schema validation (Rich Results Test)</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid var(--teal-400)">
+      <div class="eyebrow" style="color:var(--teal-600)">Dashboard 2</div>
+      <h3>AI / GEO Metrics</h3>
+      <p>Emerging, influence-based, requires custom tracking.</p>
+      <ul class="checklist">
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Prompt citation rate (% of tracked prompts where GCA is cited)</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Citation quality (recommended vs. mentioned vs. absent)</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Brand framing ("trusted partner" vs. "unknown platform")</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Competitor citation share (who gets cited instead?)</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>AIO appearances for target queries</li>
+        <li><div class="check-icon"><svg viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="var(--teal-600)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>Platform coverage: ChatGPT / Perplexity / Gemini separately</li>
+      </ul>
+    </div>
+  </div>
+  <div class="section-title">Reporting cadence</div>
+  <table class="metric-table">
+    <tr><th>Frequency</th><th>Activity</th><th>Tool</th><th>Owner</th></tr>
+    <tr><td>Weekly</td><td>Manual prompt testing: 10 priority queries across ChatGPT, Perplexity, Google AIO. Log results.</td><td>ChatGPT, Perplexity, Google</td><td>Marketing</td></tr>
+    <tr><td>Monthly</td><td>Full 50-prompt sweep. Organic traffic review. New content published this month.</td><td>GSC + GA4 + manual</td><td>Marketing + SEO lead</td></tr>
+    <tr><td>Quarterly</td><td>Full phase review: citation rate trend, competitor gap analysis, content calendar planning.</td><td>All tools</td><td>Leadership</td></tr>
+    <tr><td>Phase transitions</td><td>Evaluate measurable outcomes checklist from current phase. Brief team on next phase scope.</td><td>Internal review</td><td>Strategy lead</td></tr>
+  </table>
+  <div class="info-box amber" style="margin-top:20px"><strong>Attribution challenge:</strong> AI often influences the discovery stage and the buyer then converts via a different channel — direct, email, or referral. Standard last-click analytics will undercount GEO's contribution. Track direct and branded search volume alongside AI metrics as a proxy for AI-influenced awareness.</div>
+</div>
+
+<!-- COMPARE -->
+<div class="page" id="compare">
+  <div class="eyebrow">Strategic comparison</div>
+  <h2>SEO vs. AIO vs. GEO</h2>
+  <p class="lead">Three disciplines. Overlapping but distinct mechanics. All three must run simultaneously — each one reinforces the others but none can substitute for another.</p>
+  <div class="compare-wrap">
+    <table class="compare-table">
+      <tr>
+        <th style="width:140px">Dimension</th>
+        <th class="col-seo" style="color:var(--blue-800)">SEO — Traditional Search</th>
+        <th style="background:var(--purple-50);color:var(--purple-800)">AIO — Google AI Overviews</th>
+        <th class="col-geo" style="color:var(--teal-800)">GEO — Generative Engines</th>
+      </tr>
+      <tr><td>Goal</td><td class="col-seo">Rank higher in the link list</td><td style="background:var(--purple-50)">Be included in Google's AI summary</td><td class="col-geo">Be synthesised in the AI answer</td></tr>
+      <tr><td>Platforms</td><td class="col-seo">Google, Bing organic results</td><td style="background:var(--purple-50)">Google AI Overviews</td><td class="col-geo">ChatGPT, Perplexity, Claude, Gemini</td></tr>
+      <tr><td>Key signals</td><td class="col-seo">Keywords, backlinks, technical health, E-E-A-T</td><td style="background:var(--purple-50)">Answer-first structure, FAQ schema, traditional SEO + clarity</td><td class="col-geo">Topical depth, semantic consistency, original data, structured content</td></tr>
+      <tr><td>Content style</td><td class="col-seo">Keyword-optimised pages</td><td style="background:var(--purple-50)">Question-led, direct answers, FAQ blocks</td><td class="col-geo">Clear, factual, definition-first, data-rich, unambiguous</td></tr>
+      <tr><td>Research method</td><td class="col-seo">Keyword + volume analysis</td><td style="background:var(--purple-50)">PAA + question discovery tools</td><td class="col-geo">Prompt mapping — natural language AI queries</td></tr>
+      <tr><td>Authority signals</td><td class="col-seo">Backlinks, domain authority</td><td style="background:var(--purple-50)">Backlinks + content credibility</td><td class="col-geo">Topical ownership, citation patterns, cross-source consistency</td></tr>
+      <tr><td>Measurement</td><td class="col-seo">Rankings, impressions, organic traffic</td><td style="background:var(--purple-50)">AIO appearances, featured snippet rate</td><td class="col-geo">Citation presence, inclusion frequency, brand framing</td></tr>
+      <tr><td>Competitive lens</td><td class="col-seo">Who ranks above us?</td><td style="background:var(--purple-50)">Who gets the AIO box instead of us?</td><td class="col-geo">Who gets cited instead of us?</td></tr>
+      <tr><td>Tools</td><td class="col-seo">GSC, Semrush, Ahrefs, Screaming Frog</td><td style="background:var(--purple-50)">Rich Results Test, Semrush AIO, manual Google testing</td><td class="col-geo">ChatGPT, Perplexity (manual), LangChain (Phase 5), Authoritas</td></tr>
+      <tr><td>GCA phase</td><td class="col-seo">Phase 1 — immediate priority</td><td style="background:var(--purple-50)">Phase 2 — alongside Phase 1</td><td class="col-geo">Phase 3 onwards — content programme</td></tr>
+    </table>
+  </div>
+  <div class="info-box teal" style="margin-top:24px"><strong>The critical distinction:</strong> SEO and AIO optimise for <em>position</em>. GEO optimises for <em>inclusion</em>. Being in position 1 on Google does not guarantee being cited by ChatGPT — and being cited by ChatGPT does not require being in position 1 on Google. These require parallel but coordinated strategies.</div>
+  <div class="section-title">Where GCA's opportunity is largest</div>
+  <div class="card-grid">
+    <div class="card"><div class="eyebrow" style="color:var(--teal-600)">Uncrowded space</div><h3>GEO — lowest competition now</h3><p>The category "vetted African talent for international employers" is largely unclaimed in AI search. Acting now means GCA can establish category ownership before competitors do.</p></div>
+    <div class="card"><div class="eyebrow" style="color:var(--blue-600)">Fastest measurable wins</div><h3>AIO — quickest citations</h3><p>AIO still relies on Google's existing index. With Phase 1 SEO + answer-first content structure, GCA can appear in AIO summaries within 60–90 days of implementation.</p></div>
+  </div>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  window.scrollTo(0, 0);
+}
+</script>
+
+<footer class="footer">
+  Prepared with love by Abel Morara in collaboration with Angela Gualtieri | Global Careers Africa
+</footer>
+
+</body>
+</html>
