@@ -1,0 +1,1820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GCA Project Workspace v2</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d0d0b;--ink2:#3a3a36;--ink3:#7a7a72;--ink4:#b0b0a6;
+  --paper:#f5f4ef;--paper2:#eceae2;--paper3:#e0ddd3;
+  --border:rgba(0,0,0,0.10);--border2:rgba(0,0,0,0.05);
+  --teal:#1a9e72;--teal-l:#e0f5ed;--teal-d:#0d6b4d;
+  --purple:#6c5fcf;--purple-l:#edeafe;--purple-d:#4a3fa0;
+  --amber:#c47c1a;--amber-l:#fef0d6;--amber-d:#8a5510;
+  --coral:#c4412a;--coral-l:#fde8e4;--coral-d:#8f2d1c;
+  --blue:#1a6fc4;--blue-l:#e0edfd;--blue-d:#0f4f94;
+  --slate:#3a4a5c;--slate-l:#e4e8ee;--slate-d:#1e2a38;
+  --green:#1a9e72;--red:#c4412a;--orange:#c47c1a;
+  --r:6px;--r-sm:3px;--sb:220px;--hdr:52px;
+}
+body{font-family:'IBM Plex Sans',sans-serif;background:var(--paper);color:var(--ink);min-height:100vh;display:flex;flex-direction:column}
+.app{display:flex;min-height:100vh}
+
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sb);background:var(--ink);color:var(--paper);display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:100;overflow-y:auto}
+.sb-logo{padding:18px 16px 14px;border-bottom:1px solid rgba(255,255,255,0.07)}
+.sb-mark{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--teal);margin-bottom:3px}
+.sb-name{font-size:13px;font-weight:600;color:#fff;line-height:1.3}
+.sb-section{padding:12px 16px 3px;font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-top:6px}
+.ni{display:flex;align-items:center;gap:9px;padding:8px 16px;font-size:12px;font-weight:400;color:rgba(255,255,255,0.55);cursor:pointer;transition:all 0.1s;border-left:2px solid transparent}
+.ni:hover{color:#fff;background:rgba(255,255,255,0.04)}
+.ni.active{color:#fff;border-left-color:var(--teal);background:rgba(26,158,114,0.1)}
+.ni .dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,0.18)}
+.ni.active .dot{background:var(--teal)}
+.ni-badge{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 5px;border-radius:2px;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.35)}
+.ni.active .ni-badge{background:rgba(26,158,114,0.2);color:var(--teal)}
+.health-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-left:4px}
+.hd-green{background:#22c55e}.hd-amber{background:#f59e0b}.hd-red{background:#ef4444}.hd-none{background:rgba(255,255,255,0.18)}
+.sb-notif{margin:8px 12px;background:rgba(26,158,114,0.15);border:1px solid rgba(26,158,114,0.25);border-radius:var(--r-sm);padding:8px 10px;cursor:pointer}
+.sb-notif-count{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--teal);margin-bottom:2px}
+.sb-notif-label{font-size:11px;color:rgba(255,255,255,0.5)}
+.sb-footer{margin-top:auto;padding:14px 16px;border-top:1px solid rgba(255,255,255,0.05);font-size:10px;color:rgba(255,255,255,0.2);font-family:'IBM Plex Mono',monospace;line-height:1.6}
+.sb-presence{display:flex;align-items:center;gap:6px;margin-bottom:6px}
+.presence-dot{width:7px;height:7px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 2px rgba(26,158,114,0.3)}
+
+/* ── MAIN ── */
+.main{margin-left:var(--sb);flex:1;display:flex;flex-direction:column}
+.topbar{height:var(--hdr);background:var(--paper);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;position:sticky;top:0;z-index:50}
+.tb-title{font-size:13px;font-weight:600;font-family:'IBM Plex Mono',monospace;letter-spacing:0.02em}
+.tb-meta{display:flex;align-items:center;gap:14px}
+.tb-stat{font-size:11px;color:var(--ink3);font-family:'IBM Plex Mono',monospace}
+.tb-stat span{color:var(--ink);font-weight:600}
+.tb-notif-btn{background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 10px;font-family:'IBM Plex Mono',monospace;font-size:11px;cursor:pointer;color:var(--ink2);display:flex;align-items:center;gap:6px;transition:all 0.1s}
+.tb-notif-btn:hover{background:var(--paper2)}
+.notif-badge{background:var(--coral);color:#fff;border-radius:20px;padding:1px 5px;font-size:9px;font-weight:700}
+
+.content{padding:24px;max-width:920px}
+.page{display:none}.page.active{display:block}
+
+/* ── TYPE ── */
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:5px}
+h1{font-size:24px;font-weight:600;line-height:1.2;margin-bottom:8px}
+h2{font-size:18px;font-weight:600;margin-bottom:12px}
+h3{font-size:14px;font-weight:600;margin-bottom:6px}
+p{font-size:13px;color:var(--ink2);line-height:1.7;margin-bottom:10px}
+
+/* ── CARDS ── */
+.card{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:16px;margin-bottom:10px}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.card-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px}
+
+/* ── BADGES ── */
+.badge{display:inline-flex;align-items:center;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;padding:2px 6px;border-radius:var(--r-sm);letter-spacing:0.03em;white-space:nowrap}
+.b-teal{background:var(--teal-l);color:var(--teal-d)}.b-purple{background:var(--purple-l);color:var(--purple-d)}
+.b-amber{background:var(--amber-l);color:var(--amber-d)}.b-coral{background:var(--coral-l);color:var(--coral-d)}
+.b-blue{background:var(--blue-l);color:var(--blue-d)}.b-slate{background:var(--slate-l);color:var(--slate-d)}
+.b-gray{background:var(--paper2);color:var(--ink3)}
+.b-placeholder{background:#fff3cd;color:#856404;border:1px dashed #ffc107}
+
+/* ── STATUS ── */
+.status{display:inline-flex;align-items:center;gap:5px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:500;padding:4px 8px;border-radius:var(--r-sm);cursor:pointer;transition:all 0.1s;white-space:nowrap;user-select:none;border:1px solid transparent}
+.status:hover{filter:brightness(0.94)}
+.s-todo{background:var(--paper2);color:var(--ink3);border-color:var(--border)}.s-active{background:var(--amber-l);color:var(--amber-d);border-color:rgba(196,124,26,0.2)}.s-review{background:var(--purple-l);color:var(--purple-d);border-color:rgba(108,95,207,0.2)}.s-done{background:var(--teal-l);color:var(--teal-d);border-color:rgba(26,158,114,0.2)}.s-blocked{background:var(--coral-l);color:var(--coral-d);border-color:rgba(196,65,42,0.2)}
+.sdot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.s-todo .sdot{background:var(--ink4)}.s-active .sdot{background:var(--amber)}.s-review .sdot{background:var(--purple)}.s-done .sdot{background:var(--teal)}.s-blocked .sdot{background:var(--coral)}
+
+/* ── STATUS POPUP ── */
+.spop{position:fixed;background:#fff;border:1px solid var(--border);border-radius:var(--r);box-shadow:0 8px 24px rgba(0,0,0,0.12);z-index:999;min-width:150px;overflow:hidden;display:none}
+.spop.open{display:block}
+.sopt{padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background 0.1s;border-bottom:1px solid var(--border2)}
+.sopt:last-child{border-bottom:none}.sopt:hover{background:var(--paper2)}
+.sopt-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+/* ── PROGRESS ── */
+.prog-wrap{margin:8px 0}
+.prog-label{display:flex;justify-content:space-between;font-size:11px;color:var(--ink3);margin-bottom:4px;font-family:'IBM Plex Mono',monospace}
+.prog-track{height:4px;background:var(--paper3);border-radius:2px;overflow:hidden}
+.prog-fill{height:100%;border-radius:2px;transition:width 0.4s ease}
+
+/* ── PLACEHOLDER ── */
+.placeholder-block{background:#fffbeb;border:1.5px dashed #fbbf24;border-radius:var(--r);padding:14px 16px;margin:10px 0}
+.ph-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#92400e;margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.ph-label::before{content:'⚠';font-size:12px}
+.ph-title{font-size:13px;font-weight:600;color:#78350f;margin-bottom:4px}
+.ph-desc{font-size:12px;color:#92400e;line-height:1.6;margin-bottom:6px}
+.ph-impl{font-family:'IBM Plex Mono',monospace;font-size:10px;color:#a16207;background:rgba(251,191,36,0.1);padding:4px 8px;border-radius:var(--r-sm);display:inline-block}
+
+/* ── PHASE HEADER ── */
+.ph-hd{border-radius:var(--r);margin-bottom:14px;overflow:hidden;border:1px solid var(--border)}
+.ph-hd-top{padding:14px 18px;display:flex;align-items:flex-start;gap:12px}
+.ph-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:700;color:#fff;flex-shrink:0}
+.ph-hd-body{flex:1}
+.ph-hd-title{font-size:15px;font-weight:600;margin-bottom:4px}
+.ph-hd-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ph-gate{padding:12px 18px;border-top:1px solid var(--border);font-size:12px;color:var(--ink2);line-height:1.6;background:rgba(0,0,0,0.015)}
+.ph-gate strong{font-weight:600;font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);display:block;margin-bottom:5px}
+
+/* ── PHASE BRIEF ── */
+.phase-brief{border:1px solid var(--purple);border-radius:var(--r);margin-bottom:14px;overflow:hidden}
+.pb-header{background:var(--purple-l);padding:10px 16px;display:flex;align-items:center;justify-content:space-between}
+.pb-title{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--purple-d);text-transform:uppercase;letter-spacing:0.08em}
+.pb-body{padding:14px 16px}
+.pb-section{margin-bottom:12px}
+.pb-section-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin-bottom:5px}
+.pb-textarea{width:100%;border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:'IBM Plex Sans',sans-serif;font-size:12px;line-height:1.6;color:var(--ink);background:var(--paper);resize:vertical;min-height:60px;transition:border-color 0.1s}
+.pb-textarea:focus{outline:none;border-color:var(--purple)}
+.pb-signoff{display:flex;align-items:center;gap:10px;padding:10px 16px;border-top:1px solid var(--border);background:var(--paper2)}
+.pb-signoff-label{font-size:12px;color:var(--ink2);flex:1}
+.pb-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;padding:6px 14px;border-radius:var(--r-sm);border:none;cursor:pointer;transition:all 0.1s}
+.pb-save{background:var(--purple);color:#fff}.pb-save:hover{background:var(--purple-d)}
+.pb-signed{background:var(--teal-l);color:var(--teal-d);border:1px solid var(--teal)}
+
+/* ── REVIEW LOG ── */
+.review-log{margin-top:10px}
+.review-entry{display:flex;align-items:flex-start;gap:10px;padding:10px;background:var(--paper);border-radius:var(--r-sm);margin-bottom:6px;border:1px solid var(--border2)}
+.review-health{font-size:18px;flex-shrink:0}
+.review-body{flex:1}
+.review-date{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);margin-bottom:3px}
+.review-text{font-size:12px;color:var(--ink2);line-height:1.5}
+.add-review-btn{font-family:'IBM Plex Mono',monospace;font-size:11px;background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 12px;cursor:pointer;color:var(--ink3);display:flex;align-items:center;gap:6px;transition:all 0.1s;margin-top:6px}
+.add-review-btn:hover{background:var(--paper2);color:var(--ink)}
+
+/* ── TASK CARD ── */
+.tc{background:#fff;border:1px solid var(--border);border-radius:var(--r);margin-bottom:7px;transition:box-shadow 0.12s}
+.tc:hover{box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.tc.tc-done{opacity:0.65}
+.tc-top{padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.tc-step{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--ink4);min-width:26px;padding-top:2px}
+.tc-main{flex:1}
+.tc-title{font-size:13px;font-weight:600;margin-bottom:4px;line-height:1.3}
+.tc-row{display:flex;align-items:center;gap:5px;flex-wrap:wrap;margin-bottom:5px}
+.tc-hrs{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3)}
+.tc-controls{display:flex;align-items:center;gap:7px;margin-top:5px;flex-wrap:wrap}
+.tc-expand{background:none;border:none;font-size:11px;color:var(--ink3);cursor:pointer;font-family:'IBM Plex Mono',monospace;text-decoration:underline;text-underline-offset:2px;padding:2px 0}
+.tc-expand:hover{color:var(--ink)}
+.tc-thread-btn{background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:3px 8px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);cursor:pointer;display:flex;align-items:center;gap:4px;transition:all 0.1s}
+.tc-thread-btn:hover{background:var(--paper2);color:var(--ink)}
+.tc-detail{padding:0 14px 12px 36px;display:none}
+.tc-detail.open{display:block}
+.tc-desc{font-size:12px;color:var(--ink2);line-height:1.6;margin-bottom:8px}
+.tc-outcome{font-size:12px;background:var(--paper2);border-left:3px solid var(--teal);padding:8px 10px;border-radius:0 var(--r-sm) var(--r-sm) 0;color:var(--ink2);line-height:1.5;margin-bottom:8px}
+.tc-outcome strong{color:var(--teal-d);font-weight:600}
+.tc-metrics{font-size:12px;background:var(--teal-l);border-left:3px solid var(--teal);padding:8px 10px;border-radius:0 var(--r-sm) var(--r-sm) 0;color:var(--teal-d);line-height:1.5;display:none}
+.tc-metrics strong{font-weight:600;display:block;margin-bottom:3px}
+.tc-done .tc-metrics{display:block}
+
+/* ── THREAD ── */
+.thread{padding:0 14px 12px 36px;border-top:1px solid var(--border2);display:none}
+.thread.open{display:block}
+.thread-label{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);padding:10px 0 6px}
+.thread-msg{background:var(--paper);border-radius:var(--r-sm);padding:8px 10px;margin-bottom:6px;border:1px solid var(--border2)}
+.tm-header{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.tm-author{font-size:11px;font-weight:600}
+.tm-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3)}
+.tm-text{font-size:12px;color:var(--ink2);line-height:1.5}
+.tm-link{font-size:11px;color:var(--blue);font-family:'IBM Plex Mono',monospace;margin-top:4px;word-break:break-all}
+.thread-input{width:100%;border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:'IBM Plex Sans',sans-serif;font-size:12px;color:var(--ink);background:#fff;resize:vertical;min-height:50px;margin-bottom:6px}
+.thread-input:focus{outline:none;border-color:var(--teal)}
+.thread-actions{display:flex;align-items:center;gap:6px}
+.thread-send{background:var(--teal);color:#fff;border:none;border-radius:var(--r-sm);padding:6px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.1s}
+.thread-send:hover{background:var(--teal-d)}
+.thread-link-btn{background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3);cursor:pointer;transition:all 0.1s}
+.thread-link-btn:hover{background:var(--paper2);color:var(--ink)}
+.ph-attach-note{font-size:10px;color:var(--ink3);font-family:'IBM Plex Mono',monospace}
+
+/* ── NOTES ── */
+.notes-area{margin-top:10px}
+.global-note{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:12px;margin-bottom:8px}
+.gn-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.gn-meta{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3)}
+.gn-tag{font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 6px;border-radius:2px;background:var(--purple-l);color:var(--purple-d)}
+.gn-text{font-size:13px;color:var(--ink2);line-height:1.6}
+.gn-del{background:none;border:none;color:var(--ink4);cursor:pointer;font-size:13px;padding:2px}
+.gn-del:hover{color:var(--coral)}
+.note-form{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:14px}
+.note-form-title{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin-bottom:10px}
+.note-textarea{width:100%;border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:var(--ink);resize:vertical;min-height:70px;background:var(--paper);margin-bottom:8px}
+.note-textarea:focus{outline:none;border-color:var(--purple)}
+.note-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.note-select{border:1px solid var(--border);border-radius:var(--r-sm);padding:5px 8px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink2);background:#fff;cursor:pointer}
+.note-add-btn{background:var(--purple);color:#fff;border:none;border-radius:var(--r-sm);padding:6px 14px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;cursor:pointer;transition:all 0.1s}
+.note-add-btn:hover{background:var(--purple-d)}
+
+/* ── NOTIFICATIONS ── */
+.notif-panel{background:#fff;border:1px solid var(--border);border-radius:var(--r);margin-bottom:14px;overflow:hidden;display:none}
+.notif-panel.open{display:block}
+.np-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.np-title{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink)}
+.np-clear{background:none;border:none;font-size:11px;color:var(--ink3);cursor:pointer;font-family:'IBM Plex Mono',monospace;text-decoration:underline}
+.np-clear:hover{color:var(--ink)}
+.notif-item{padding:10px 14px;border-bottom:1px solid var(--border2);display:flex;align-items:flex-start;gap:10px}
+.notif-item:last-child{border-bottom:none}
+.notif-icon{font-size:14px;flex-shrink:0;margin-top:1px}
+.notif-body{flex:1}
+.notif-text{font-size:12px;color:var(--ink2);line-height:1.5;margin-bottom:2px}
+.notif-time{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink3)}
+.notif-empty{padding:16px 14px;font-size:12px;color:var(--ink3);text-align:center;font-family:'IBM Plex Mono',monospace}
+
+/* ── DASHBOARD ── */
+.dash-hero{background:var(--ink);border-radius:var(--r);padding:22px 24px;margin-bottom:16px;position:relative;overflow:hidden}
+.dash-hero::before{content:'';position:absolute;top:-40px;right:-40px;width:160px;height:160px;border:1px solid rgba(26,158,114,0.12);border-radius:50%}
+.dash-hero::after{content:'';position:absolute;top:20px;right:20px;width:70px;height:70px;border:1px solid rgba(26,158,114,0.08);border-radius:50%}
+.dh-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--teal);margin-bottom:3px}
+.dh-title{font-size:20px;font-weight:600;color:#fff;margin-bottom:5px}
+.dh-sub{font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:14px}
+.dh-stats{display:flex;gap:12px;flex-wrap:wrap;position:relative;z-index:1}
+.dh-stat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:var(--r-sm);padding:9px 14px}
+.dh-n{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:#fff;margin-bottom:2px}
+.dh-l{font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.08em}
+
+.focus-box{background:#fff;border:1px solid var(--teal);border-radius:var(--r);padding:14px;margin-bottom:14px}
+.focus-lbl{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--teal);margin-bottom:8px}
+.focus-title{font-size:14px;font-weight:600;margin-bottom:3px}
+.focus-sub{font-size:11px;color:var(--ink3);font-family:'IBM Plex Mono',monospace;margin-bottom:8px}
+.focus-outcome{font-size:12px;background:var(--paper2);border-left:3px solid var(--teal);padding:7px 10px;border-radius:0 var(--r-sm) var(--r-sm) 0;color:var(--ink2);line-height:1.5;margin-bottom:10px}
+
+.outcome-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px}
+.oc{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;border-left:3px solid}
+.oc-n{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin-bottom:3px}
+.oc-lbl{font-size:13px;font-weight:600;margin-bottom:2px}
+.oc-desc{font-size:11px;color:var(--ink3);line-height:1.5}
+.oc-phases{margin-top:7px;display:flex;gap:4px;flex-wrap:wrap}
+
+.pipeline-title{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin-bottom:8px}
+.pi{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:10px 14px;margin-bottom:5px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:box-shadow 0.1s}
+.pi:hover{box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.pi-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+.pi-info{flex:1}
+.pi-name{font-size:13px;font-weight:600}
+.pi-meta{font-size:11px;color:var(--ink3);font-family:'IBM Plex Mono',monospace;margin-top:1px;display:flex;align-items:center;gap:6px}
+.pi-prog{width:110px}
+.pi-review-due{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--amber-d);background:var(--amber-l);padding:2px 6px;border-radius:2px}
+
+/* ── SECTION LABEL ── */
+.sl{font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink3);margin:18px 0 8px}
+
+/* ── INFO BOX ── */
+.ib{border-radius:var(--r-sm);padding:10px 12px;margin:10px 0;font-size:12px;line-height:1.6;border-left:3px solid}
+.ib-teal{background:var(--teal-l);border-color:var(--teal);color:var(--teal-d)}.ib-amber{background:var(--amber-l);border-color:var(--amber);color:var(--amber-d)}.ib-purple{background:var(--purple-l);border-color:var(--purple);color:var(--purple-d)}
+
+/* ── BUDGET TABLE ── */
+.bt{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:14px}
+.bt th{text-align:left;padding:8px 10px;font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);border-bottom:1px solid var(--border)}
+.bt td{padding:9px 10px;border-bottom:1px solid var(--border2);color:var(--ink2);vertical-align:top;line-height:1.5}
+.bt tr:last-child td{border-bottom:none}
+.bt td:first-child{font-weight:500;color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:11px}
+.bt-total{background:var(--ink);color:#fff;border-radius:var(--r);padding:12px 16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.bt-total-lbl{font-size:13px;font-weight:600}
+.bt-total-n{font-family:'IBM Plex Mono',monospace;font-size:18px;font-weight:600;color:var(--teal)}
+
+/* ── ANGELA VIEW ── */
+.av-task{background:#fff;border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;margin-bottom:7px;display:flex;align-items:flex-start;gap:10px}
+.av-icon{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;font-weight:700}
+.av-body{flex:1}
+.av-title{font-size:13px;font-weight:600;margin-bottom:2px}
+.av-phase{font-size:11px;color:var(--ink3);font-family:'IBM Plex Mono',monospace}
+.av-action{font-size:12px;color:var(--purple-d);font-weight:500;margin-top:3px}
+.av-sla{font-size:12px;color:var(--ink2);margin-top:4px;line-height:1.5}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:200;display:none;align-items:center;justify-content:center}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:var(--r);padding:20px;max-width:480px;width:90%;max-height:80vh;overflow-y:auto}
+.modal-title{font-size:15px;font-weight:600;margin-bottom:14px}
+.modal-close{float:right;background:none;border:none;font-size:18px;cursor:pointer;color:var(--ink3);margin-top:-4px}
+.modal-input{width:100%;border:1px solid var(--border);border-radius:var(--r-sm);padding:8px 10px;font-family:'IBM Plex Sans',sans-serif;font-size:13px;color:var(--ink);margin-bottom:8px;background:var(--paper)}
+.modal-input:focus{outline:none;border-color:var(--purple)}
+.modal-btn{background:var(--purple);color:#fff;border:none;border-radius:var(--r-sm);padding:8px 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;cursor:pointer;width:100%;transition:all 0.1s}
+.modal-btn:hover{background:var(--purple-d)}
+
+.divider{height:1px;background:var(--border);margin:16px 0}
+
+@media(max-width:700px){.sidebar{display:none}.main{margin-left:0}.card-grid,.card-grid-3,.outcome-grid{grid-template-columns:1fr}.content{padding:14px}}
+
+
+/* --- PRICING INTERNAL CSS --- */
+
+
+
+
+
+/* ── HEADER ── */
+.hdr{
+  background:var(--ink);color:#fff;
+  padding:28px 32px;
+  display:flex;align-items:flex-start;justify-content:space-between;
+  gap:20px;flex-wrap:wrap;
+  border-bottom:2px solid var(--teal);
+}
+.hdr-left{}
+.hdr-mark{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--teal);margin-bottom:6px}
+.hdr-title{font-size:20px;font-weight:600;margin-bottom:2px}
+.hdr-sub{font-size:12px;color:rgba(255,255,255,0.4);font-family:'IBM Plex Mono',monospace}
+.hdr-badges{display:flex;gap:8px;flex-wrap:wrap;align-items:flex-start}
+.hdr-badge{
+  background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);
+  border-radius:var(--r-sm);padding:6px 12px;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(255,255,255,0.5);
+  line-height:1.4;
+}
+.hdr-badge strong{display:block;color:#fff;font-size:12px;margin-bottom:1px;font-family:'IBM Plex Sans',sans-serif;font-weight:600}
+
+/* ── INTERNAL BANNER ── */
+.int-banner{
+  background:#fff3cd;border-bottom:1px solid #ffc107;
+  padding:8px 32px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;
+  color:#856404;
+  display:flex;align-items:center;gap:8px;
+}
+
+/* ── BODY ── */
+.wrap{max-width:900px;margin:0 auto;padding:28px 24px 80px}
+
+/* ── SECTION LABEL ── */
+.int-sl{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;
+  letter-spacing:0.14em;text-transform:uppercase;color:var(--ink3);
+  margin:32px 0 10px;
+  display:flex;align-items:center;gap:10px;
+}
+.int-sl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── PHASE BLOCK ── */
+.int-phase-block{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--r);margin-bottom:14px;overflow:hidden;
+}
+.int-pb-header{
+  padding:14px 18px;
+  display:flex;align-items:flex-start;gap:12px;
+  border-bottom:1px solid var(--border);
+}
+.int-pb-num{
+  width:32px;height:32px;border-radius:var(--r-sm);
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;
+}
+.n0{background:var(--slate)}
+.n1{background:var(--teal)}
+.n2{background:var(--purple)}
+.n3{background:var(--amber)}
+.n4{background:var(--coral)}
+.n5{background:var(--blue)}
+
+.int-pb-meta{flex:1}
+.int-pb-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:3px}
+.e0{color:var(--ink3)}.e1{color:var(--teal-d)}.e2{color:var(--purple-d)}.e3{color:var(--amber-d)}.e4{color:var(--coral-d)}.e5{color:var(--blue-d)}
+.pb-name{font-size:14px;font-weight:600;margin-bottom:2px}
+.pb-timeline{font-size:11px;color:var(--ink3);font-family:'IBM Plex Mono',monospace}
+.pb-quick{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}
+.pq-item{text-align:right}
+.pq-label{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--ink3);margin-bottom:2px;text-transform:uppercase;letter-spacing:0.06em}
+.pq-val{font-family:'IBM Plex Mono',monospace;font-size:13px;font-weight:600;color:var(--ink)}
+
+/* ── INTERNAL TABLE ── */
+.int-table{width:100%;border-collapse:collapse;font-size:12px;margin-bottom:0}
+.int-table th{
+  text-align:left;padding:7px 14px;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);
+  background:var(--paper);border-bottom:1px solid var(--border);
+}
+.int-table td{
+  padding:9px 14px;border-bottom:1px solid var(--border2);
+  color:var(--ink2);vertical-align:top;line-height:1.5;
+}
+.int-table tr:last-child td{border-bottom:none}
+.int-table td:first-child{font-weight:500;color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:11px}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--ink)}
+.dim{color:var(--ink3)!important;font-size:11px}
+
+/* ── PRICE ROW ── */
+.int-price-row{
+  padding:12px 14px;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;
+  border-top:1px solid var(--border);
+  background:var(--paper);
+}
+.pr-cell{padding:10px 12px;border-radius:var(--r-sm)}
+.pr-label{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin-bottom:4px}
+.pr-val{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:600}
+.pr-note{font-size:11px;color:var(--ink3);margin-top:2px;line-height:1.4}
+
+.cell-client{background:#fff;border:1px solid var(--border)}
+.cell-floor{background:var(--teal-l);border:1px solid rgba(26,158,114,0.2)}
+.cell-margin{background:var(--amber-l);border:1px solid rgba(196,124,26,0.2)}
+.cv-client{color:var(--ink)}
+.cv-floor{color:var(--teal-d)}
+.cv-margin{color:var(--amber-d)}
+
+/* ── RESEARCH RATIONALE ── */
+.rationale{
+  padding:10px 14px;
+  background:var(--slate-l);
+  border-top:1px solid var(--border);
+  font-size:11px;color:var(--slate-d);line-height:1.6;
+}
+.rationale strong{font-weight:600;color:var(--slate-d)}
+
+/* ── GATE ── */
+.int-gate-row{
+  padding:10px 14px;
+  background:var(--paper);
+  border-top:1px solid var(--border);
+  font-size:11px;color:var(--ink2);
+  display:flex;align-items:flex-start;gap:8px;
+}
+.gate-label{
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.08em;color:var(--coral-d);
+  flex-shrink:0;margin-top:1px;
+  background:var(--coral-l);padding:2px 6px;border-radius:var(--r-sm);
+}
+
+/* ── PHASE 3 SPECIAL ── */
+.per-piece-table{width:100%;border-collapse:collapse;font-size:12px}
+.per-piece-table th{
+  text-align:left;padding:7px 14px;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);
+  background:var(--paper);border-bottom:1px solid var(--border);
+}
+.per-piece-table td{
+  padding:8px 14px;border-bottom:1px solid var(--border2);
+  color:var(--ink2);vertical-align:top;line-height:1.5;font-size:12px;
+}
+.per-piece-table tr:last-child td{border-bottom:none}
+.per-piece-table td:first-child{font-weight:500;color:var(--ink);font-family:'IBM Plex Mono',monospace;font-size:11px}
+.internal-only{
+  background:#fff3cd;border:1px dashed #ffc107;
+  border-radius:var(--r-sm);padding:8px 12px;margin:10px 14px;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;color:#856404;
+  display:flex;align-items:center;gap:6px;
+}
+
+/* ── SUMMARY ── */
+.sum-table{width:100%;border-collapse:collapse;font-size:12px;background:#fff;border-radius:var(--r);overflow:hidden;border:1px solid var(--border);margin-bottom:10px}
+.sum-table th{
+  text-align:left;padding:8px 14px;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;
+  text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);
+  background:var(--paper);border-bottom:1px solid var(--border);
+}
+.sum-table td{
+  padding:11px 14px;border-bottom:1px solid var(--border2);
+  color:var(--ink2);vertical-align:middle;
+}
+.sum-table tr:last-child td{border-bottom:none}
+.sum-table td:first-child{font-weight:600;color:var(--ink)}
+.effective-rate{
+  background:var(--teal-l);border-radius:var(--r);
+  padding:14px 16px;margin-bottom:10px;
+  display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;
+}
+.er-cell{text-align:center}
+.er-label{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--teal-d);margin-bottom:4px}
+.er-val{font-family:'IBM Plex Mono',monospace;font-size:16px;font-weight:600;color:var(--teal-d)}
+.er-note{font-size:10px;color:var(--teal-d);opacity:0.7;margin-top:2px}
+
+/* ── PH TAGS ── */
+.ph-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;
+  padding:1px 5px;border-radius:2px;
+  background:#fff3cd;color:#856404;border:1px dashed #ffc107;
+  vertical-align:middle;margin-left:3px;
+}
+.confirmed-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:600;
+  padding:1px 5px;border-radius:2px;
+  background:var(--teal-l);color:var(--teal-d);border:1px solid rgba(26,158,114,0.3);
+  vertical-align:middle;margin-left:3px;
+}
+
+@media(max-width:640px){
+  .int-price-row{grid-template-columns:1fr;gap:8px}
+  .effective-rate{grid-template-columns:1fr 1fr}
+  .pb-quick{display:none}
+}
+
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-mark">GCA // Workspace</div>
+    <div class="sb-name">Search Visibility<br>Project v2</div>
+  </div>
+
+  <div style="padding:10px 12px">
+    <div class="sb-presence">
+      <div class="presence-dot"></div>
+      <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(255,255,255,0.4)">Abel — active now</span>
+    </div>
+    <div id="sb-last" style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,0.2)">—</div>
+  </div>
+
+  <div class="placeholder-block" style="margin:0 10px 6px;padding:8px 10px">
+    <div class="ph-label" style="margin-bottom:3px">Multi-user Presence</div>
+    <div style="font-size:11px;color:#92400e">Real-time online status for Angela and other users requires WebSocket server. <span class="ph-impl">Implement at migration</span></div>
+  </div>
+
+  <div class="sb-section">Overview</div>
+  <div class="ni active" onclick="nav('dashboard',this)"><div class="dot"></div>Dashboard</div>
+  <div class="ni" onclick="nav('notifs',this)"><div class="dot"></div>Notifications<div class="ni-badge" id="nb-notif">0</div></div>
+  <div class="ni" onclick="nav('notes',this)"><div class="dot"></div>Notes & Ideas</div>
+  <div class="ni" onclick="nav('angela',this)"><div class="dot"></div>Angela's View</div>
+  <div class="ni" onclick="nav('budget',this)"><div class="dot"></div>Budget</div>
+
+  <div class="sb-section">Phases</div>
+  <div class="ni" onclick="nav('p0',this)"><div class="dot"></div>Phase 0 — Migration<div class="ni-badge" id="nb-0">0%</div><div class="health-dot hd-none" id="hd-0"></div></div>
+  <div class="ni" onclick="nav('p1',this)"><div class="dot"></div>Phase 1 — SEO<div class="ni-badge" id="nb-1">0%</div><div class="health-dot hd-none" id="hd-1"></div></div>
+  <div class="ni" onclick="nav('p2',this)"><div class="dot"></div>Phase 2 — AIO<div class="ni-badge" id="nb-2">0%</div><div class="health-dot hd-none" id="hd-2"></div></div>
+  <div class="ni" onclick="nav('p3',this)"><div class="dot"></div>Phase 3 — GEO<div class="ni-badge" id="nb-3">0%</div><div class="health-dot hd-none" id="hd-3"></div></div>
+  <div class="ni" onclick="nav('p4',this)"><div class="dot"></div>Phase 4 — Authority<div class="ni-badge" id="nb-4">0%</div><div class="health-dot hd-none" id="hd-4"></div></div>
+  <div class="ni" onclick="nav('p5',this)"><div class="dot"></div>Phase 5 — Engineering<div class="ni-badge" id="nb-5">0%</div><div class="health-dot hd-none" id="hd-5"></div></div>
+
+  <div class="sb-footer">
+    Started: <span id="sf-start">—</span><br>
+    <span style="font-size:9px">Progress auto-saved</span>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title" id="tb-title">Dashboard</div>
+    <div class="tb-meta">
+      <div class="tb-stat">Done: <span id="tb-done">—</span></div>
+      <div class="tb-stat">Active: <span id="tb-act">—</span></div>
+      <div class="tb-stat">Total: <span id="tb-total">—</span></div>
+      <button class="tb-notif-btn" onclick="nav('notifs',null)">
+        🔔 <span id="tb-notif-count">0</span> <span class="notif-badge" id="tb-notif-badge" style="display:none">!</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <div class="page active" id="page-dashboard">
+      <div class="dash-hero">
+        <div class="dh-eyebrow">Global Careers Africa — Project Workspace</div>
+        <div class="dh-title">Search Visibility Roadmap</div>
+        <div class="dh-sub">Becoming the cited authority on African talent sourcing across traditional search, AI Overviews, and generative engines.</div>
+        <div class="dh-stats">
+          <div class="dh-stat"><div class="dh-n" id="d-done">0</div><div class="dh-l">Complete</div></div>
+          <div class="dh-stat"><div class="dh-n" id="d-pct">0%</div><div class="dh-l">Progress</div></div>
+          <div class="dh-stat"><div class="dh-n" id="d-phase">Ph 0</div><div class="dh-l">Active Phase</div></div>
+          <div class="dh-stat"><div class="dh-n" id="d-notes">0</div><div class="dh-l">Notes</div></div>
+          <div class="dh-stat"><div class="dh-n" id="d-reviews">0</div><div class="dh-l">Reviews Done</div></div>
+        </div>
+      </div>
+      <div id="dash-focus"></div>
+      <div class="sl">5 Business Outcomes</div>
+      <div class="outcome-grid">
+        <div class="oc" style="border-left-color:var(--teal)"><div class="oc-n">Outcome 1</div><div class="oc-lbl">GCA is Findable</div><div class="oc-desc">Technically sound, indexed, machine-readable</div><div class="oc-phases"><span class="badge b-gray">Ph 0</span><span class="badge b-teal">Ph 1</span></div></div>
+        <div class="oc" style="border-left-color:var(--blue)"><div class="oc-n">Outcome 2</div><div class="oc-lbl">GCA is the Answer</div><div class="oc-desc">Cited in AI-generated responses for key queries</div><div class="oc-phases"><span class="badge b-blue">Ph 2</span><span class="badge b-amber">Ph 3</span></div></div>
+        <div class="oc" style="border-left-color:var(--amber)"><div class="oc-n">Outcome 3</div><div class="oc-lbl">GCA is the Authority</div><div class="oc-desc">Living content platform. The reference point.</div><div class="oc-phases"><span class="badge b-amber">Ph 3</span></div></div>
+        <div class="oc" style="border-left-color:var(--coral)"><div class="oc-n">Outcome 4</div><div class="oc-lbl">GCA is Trusted</div><div class="oc-desc">External signals reinforce credibility everywhere</div><div class="oc-phases"><span class="badge b-coral">Ph 4</span></div></div>
+        <div class="oc" style="border-left-color:var(--purple);grid-column:1/-1"><div class="oc-n">Outcome 5</div><div class="oc-lbl">GCA is Intelligent</div><div class="oc-desc">Data-driven. Automated tracking. The team knows exactly how GCA performs in AI search every week.</div><div class="oc-phases"><span class="badge b-purple">Ph 5</span></div></div>
+      </div>
+      <div class="pipeline-title">Phase Pipeline</div>
+      <div id="dash-pipeline"></div>
+    </div>
+
+    <!-- ═══ NOTIFICATIONS ═══ -->
+    <div class="page" id="page-notifs">
+      <div class="eyebrow">In-App Notifications</div>
+      <h2>Activity Feed</h2>
+      <div class="placeholder-block">
+        <div class="ph-label">Email Notifications — Placeholder</div>
+        <div class="ph-title">Email / Push Notification Delivery</div>
+        <div class="ph-desc">Delivering notifications outside this interface (email, push, SMS) requires a backend server and notification service (e.g. SendGrid, Firebase). Currently showing in-app only.</div>
+        <div class="ph-impl">Implement: SendGrid or Postmark at app migration</div>
+      </div>
+      <div id="notif-list"></div>
+      <div style="margin-top:10px;display:flex;gap:8px">
+        <button onclick="clearNotifs()" style="font-family:'IBM Plex Mono',monospace;font-size:11px;background:none;border:1px solid var(--border);border-radius:var(--r-sm);padding:6px 12px;cursor:pointer;color:var(--ink3)">Clear all</button>
+        <button onclick="addTestNotif()" style="font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--teal);color:#fff;border:none;border-radius:var(--r-sm);padding:6px 12px;cursor:pointer">+ Test notification</button>
+      </div>
+    </div>
+
+    <!-- ═══ NOTES ═══ -->
+    <div class="page" id="page-notes">
+      <div class="eyebrow">Notes & Ideas</div>
+      <h2>Project Notes</h2>
+      <p>Capture ideas, observations, or reminders — tied to a phase or free-standing. Visible to the whole team.</p>
+      <div class="placeholder-block">
+        <div class="ph-label">File Attachments — Placeholder</div>
+        <div class="ph-title">Attach files to notes</div>
+        <div class="ph-desc">File uploads require server storage. As a workaround, paste a Google Drive or Dropbox share link in the note body — it will be preserved and displayed as a clickable link.</div>
+        <div class="ph-impl">Implement: S3 or Cloudflare R2 at migration</div>
+      </div>
+      <div class="note-form">
+        <div class="note-form-title">Add a note or idea</div>
+        <textarea class="note-textarea" id="note-input" placeholder="Write your idea, observation, or reminder…"></textarea>
+        <div class="note-row">
+          <select class="note-select" id="note-tag">
+            <option value="general">General</option>
+            <option value="Phase 0">Phase 0 — Migration</option>
+            <option value="Phase 1">Phase 1 — SEO</option>
+            <option value="Phase 2">Phase 2 — AIO</option>
+            <option value="Phase 3">Phase 3 — GEO</option>
+            <option value="Phase 4">Phase 4 — Authority</option>
+            <option value="Phase 5">Phase 5 — Engineering</option>
+            <option value="Angela">For Angela</option>
+            <option value="Budget">Budget</option>
+          </select>
+          <button class="note-add-btn" onclick="addNote()">Add Note</button>
+        </div>
+      </div>
+      <div class="sl">Saved Notes</div>
+      <div class="notes-area" id="notes-list"></div>
+    </div>
+
+    <!-- ═══ ANGELA VIEW ═══ -->
+    <div class="page" id="page-angela">
+      <div class="eyebrow">Your View</div>
+      <h2>Angela — What You Need to Know</h2>
+      <p>Tasks waiting for your review, things you need to provide, and what's coming up. No technical detail — just what matters.</p>
+      <div id="angela-content"></div>
+    </div>
+
+    <!-- ═══ BUDGET ═══ -->
+    <div class="page" id="page-budget">
+<div id="pricing-tab-int">
+
+
+<div class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-mark">GCA · Search Visibility Project</div>
+    <div class="hdr-title">Pricing — Internal Reference</div>
+    <div class="hdr-sub">Per-piece rates · Hour estimates · Market rationale · Margin view</div>
+  </div>
+  <div class="hdr-badges">
+    <div class="hdr-badge"><strong>All USD</strong>Client sees same</div>
+    <div class="hdr-badge"><strong>Ph 3 internal</strong>Per-piece rate private</div>
+    <div class="hdr-badge"><strong>Placeholders</strong>Confirm per phase</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <!-- ═══ PHASE 0 ═══ -->
+  <div class="int-sl">Phase 0 — WordPress Build</div>
+  <div class="int-phase-block">
+    <div class="int-pb-header">
+      <div class="int-pb-num n0">0</div>
+      <div class="int-pb-meta">
+        <div class="int-pb-eyebrow e0">Foundation · Fixed fee</div>
+        <div class="pb-name">WordPress Site Build</div>
+        <div class="pb-timeline">Months 1–2 · Abel as sole developer · No external dev cost</div>
+      </div>
+      <div class="pb-quick">
+        <div class="pq-item">
+          <div class="pq-label">Est. hours</div>
+          <div class="pq-val">38–59 hrs</div>
+        </div>
+        <div class="pq-item">
+          <div class="pq-label">Client sees</div>
+          <div class="pq-val">$4,500–$6,500</div>
+        </div>
+      </div>
+    </div>
+    <table class="int-table">
+      <tr>
+        <th>Work stream</th>
+        <th>Est. hours</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>WP Engine setup + Cloudflare/CDN/SSL</td>
+        <td class="mono">3–5 hrs</td>
+        <td class="dim">Config, DNS, SSL verify, EverCache test</td>
+      </tr>
+      <tr>
+        <td>Theme + GCA brand implementation</td>
+        <td class="mono">10–16 hrs</td>
+        <td class="dim">Custom theme or builder, typography, colour system</td>
+      </tr>
+      <tr>
+        <td>ACF Pro — custom content types</td>
+        <td class="mono">5–8 hrs</td>
+        <td class="dim">White Papers, Stories, Glossary, News CPTs + templates</td>
+      </tr>
+      <tr>
+        <td>RankMath Pro full config</td>
+        <td class="mono">3–4 hrs</td>
+        <td class="dim">Sitemap, meta, schema framework, AIO settings</td>
+      </tr>
+      <tr>
+        <td>Gravity Forms setup</td>
+        <td class="mono">3–5 hrs</td>
+        <td class="dim">Enquiry, contact, lead capture forms + CRM hooks</td>
+      </tr>
+      <tr>
+        <td>Content migration from Squarespace</td>
+        <td class="mono">6–10 hrs</td>
+        <td class="dim">Page content, images, redirect mapping</td>
+      </tr>
+      <tr>
+        <td>Core Web Vitals — pass all pages</td>
+        <td class="mono">4–6 hrs</td>
+        <td class="dim">Image optimisation, lazy load, LCP/CLS fixes</td>
+      </tr>
+      <tr>
+        <td>QA + documentation + Angela handover</td>
+        <td class="mono">4–5 hrs</td>
+        <td class="dim">Cross-browser, mobile, training doc, 1hr walkthrough call</td>
+      </tr>
+    </table>
+    <div class="int-price-row">
+      <div class="pr-cell cell-client">
+        <div class="pr-label">Client quote (what Angela sees)</div>
+        <div class="pr-val cv-client">$4,500–$6,500 <span class="ph-tag">placeholder</span></div>
+        <div class="pr-note">Confirm before Phase 0 kicks off</div>
+      </div>
+      <div class="pr-cell cell-floor">
+        <div class="pr-label">Floor rate check (at $100/hr)</div>
+        <div class="pr-val cv-floor">$3,800–$5,900</div>
+        <div class="pr-note">38–59 hrs × $100/hr effective rate</div>
+      </div>
+      <div class="pr-cell cell-margin">
+        <div class="pr-label">Strategy premium</div>
+        <div class="pr-val cv-margin">~$600–$700</div>
+        <div class="pr-note">Dev + SEO strategy combined = above pure dev rate</div>
+      </div>
+    </div>
+    <div class="rationale">
+      <strong>Market rationale:</strong> Australian specialist freelancers charge AUD $5,000–$8,000 for a custom WordPress build. Abel's quote in USD ($4,500–$6,500) is competitive given he handles dev + SEO strategy in one. Pure dev agencies in AU start from $5k AUD for basic builds; custom with SEO integration runs $8k–$12k AUD. Screaming Frog, Core Web Vitals, and RankMath setup are normally separate SEO costs not included in a dev quote — Abel's fixed fee covers both.
+    </div>
+    <div class="int-gate-row">
+      <span class="gate-label">Gate</span>
+      Site live on WP Engine, Core Web Vitals green, all plugins configured and validated, Angela walkthrough complete → invoice triggered.
+    </div>
+  </div>
+
+  <!-- ═══ PHASE 1 ═══ -->
+  <div class="int-sl">Phase 1 — SEO Foundations</div>
+  <div class="int-phase-block">
+    <div class="int-pb-header">
+      <div class="int-pb-num n1">1</div>
+      <div class="int-pb-meta">
+        <div class="int-pb-eyebrow e1">SEO · Fixed fee</div>
+        <div class="pb-name">SEO Foundations</div>
+        <div class="pb-timeline">Months 1–2 · Overlaps with Phase 0 · Must complete before Ph2 compounds</div>
+      </div>
+      <div class="pb-quick">
+        <div class="pq-item">
+          <div class="pq-label">Est. hours</div>
+          <div class="pq-val">30–40 hrs</div>
+        </div>
+        <div class="pq-item">
+          <div class="pq-label">Client sees</div>
+          <div class="pq-val">$2,500–$3,500</div>
+        </div>
+      </div>
+    </div>
+    <table class="int-table">
+      <tr>
+        <th>Work stream</th>
+        <th>Est. hours</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>Keyword research + map</td>
+        <td class="mono">8–12 hrs</td>
+        <td class="dim">Buyer-intent terms, niche African talent sourcing, EOR queries</td>
+      </tr>
+      <tr>
+        <td>Meta titles + descriptions rewrite</td>
+        <td class="mono">5–7 hrs</td>
+        <td class="dim">Every page. Keyword-intentional, not generic.</td>
+      </tr>
+      <tr>
+        <td>Screaming Frog crawl + fix</td>
+        <td class="mono">4–6 hrs</td>
+        <td class="dim">404s, redirect chains, missing alt tags, duplicate titles</td>
+      </tr>
+      <tr>
+        <td>Organization schema (JSON-LD)</td>
+        <td class="mono">2–3 hrs</td>
+        <td class="dim">Homepage, inject via RankMath, test with Google Rich Results</td>
+      </tr>
+      <tr>
+        <td>Thin page expansion (400+ words)</td>
+        <td class="mono">6–8 hrs</td>
+        <td class="dim">Homepage, Smartsourcing, Build a Global Team, Why Africa, Verification</td>
+      </tr>
+      <tr>
+        <td>Google Search Console setup</td>
+        <td class="mono">1–2 hrs</td>
+        <td class="dim">Verify, submit sitemap, connect to Analytics</td>
+      </tr>
+      <tr>
+        <td>Baseline metrics report</td>
+        <td class="mono">4–2 hrs</td>
+        <td class="dim">Current rankings, impressions, CWV, exported for Phase gate</td>
+      </tr>
+    </table>
+    <div class="int-price-row">
+      <div class="pr-cell cell-client">
+        <div class="pr-label">Client quote (what Angela sees)</div>
+        <div class="pr-val cv-client">$2,500–$3,500 <span class="ph-tag">placeholder</span></div>
+        <div class="pr-note">Confirm before Phase 1 kicks off</div>
+      </div>
+      <div class="pr-cell cell-floor">
+        <div class="pr-label">Floor rate check (at $85/hr)</div>
+        <div class="pr-val cv-floor">$2,550–$3,400</div>
+        <div class="pr-note">30–40 hrs × $85/hr — within range</div>
+      </div>
+      <div class="pr-cell cell-margin">
+        <div class="pr-label">Effective hourly</div>
+        <div class="pr-val cv-margin">$75–$95/hr</div>
+        <div class="pr-note">At midpoint. Justified for specialist niche SEO.</div>
+      </div>
+    </div>
+    <div class="rationale">
+      <strong>Market rationale:</strong> A comprehensive SEO site audit in Australia runs $1,500–$5,000. A content audit + keyword strategy alone is $2,000–$4,000. Phase 1 combines both with implementation (not just a report). AU SEO consultants charge $150–$300/hr; Abel's effective rate here is below that, which gives GCA good value but is fully defensible as specialist niche work (African talent sourcing is not a generic category).
+    </div>
+    <div class="int-gate-row">
+      <span class="gate-label">Gate</span>
+      Keyword map approved, all metas live, schema validated in Google Rich Results, Search Console verified, baseline report delivered → invoice triggered.
+    </div>
+  </div>
+
+  <!-- ═══ PHASE 2 ═══ -->
+  <div class="int-sl">Phase 2 — AIO Readiness</div>
+  <div class="int-phase-block">
+    <div class="int-pb-header">
+      <div class="int-pb-num n2">2</div>
+      <div class="int-pb-meta">
+        <div class="int-pb-eyebrow e2">AIO · Fixed fee</div>
+        <div class="pb-name">AI Overview Readiness</div>
+        <div class="pb-timeline">Months 2–5 · Overlaps with Phase 1 completion · Runs 1 hr/week monitoring</div>
+      </div>
+      <div class="pb-quick">
+        <div class="pq-item">
+          <div class="pq-label">Est. hours</div>
+          <div class="pq-val">25–35 + 1/wk</div>
+        </div>
+        <div class="pq-item">
+          <div class="pq-label">Client sees</div>
+          <div class="pq-val">$2,000–$3,000</div>
+        </div>
+      </div>
+    </div>
+    <table class="int-table">
+      <tr>
+        <th>Work stream</th>
+        <th>Est. hours</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>Prompt mapping (AI query research)</td>
+        <td class="mono">8–10 hrs</td>
+        <td class="dim">GEO equivalent of keyword research — natural language buyer queries</td>
+      </tr>
+      <tr>
+        <td>Answer-first content rewrites</td>
+        <td class="mono">10–14 hrs</td>
+        <td class="dim">Core service pages restructured to lead with direct answers</td>
+      </tr>
+      <tr>
+        <td>FAQ schema (JSON-LD) per page</td>
+        <td class="mono">3–5 hrs</td>
+        <td class="dim">All rewritten pages, validated, injected via RankMath</td>
+      </tr>
+      <tr>
+        <td>HowTo schema for process content</td>
+        <td class="mono">2–3 hrs</td>
+        <td class="dim">EOR process, how GCA verification works, etc.</td>
+      </tr>
+      <tr>
+        <td>Weekly AIO monitoring (ongoing)</td>
+        <td class="mono">~1 hr/wk</td>
+        <td class="dim">Manual + tool checks across 3+ target queries. Included in phase fee.</td>
+      </tr>
+      <tr>
+        <td>Phase gate report</td>
+        <td class="mono">2–3 hrs</td>
+        <td class="dim">Documented AIO appearances with screenshots + query list</td>
+      </tr>
+    </table>
+    <div class="int-price-row">
+      <div class="pr-cell cell-client">
+        <div class="pr-label">Client quote (what Angela sees)</div>
+        <div class="pr-val cv-client">$2,000–$3,000 <span class="ph-tag">placeholder</span></div>
+        <div class="pr-note">Confirm before Phase 2 kicks off</div>
+      </div>
+      <div class="pr-cell cell-floor">
+        <div class="pr-label">Floor rate check (at $80/hr)</div>
+        <div class="pr-val cv-floor">$2,000–$2,800</div>
+        <div class="pr-note">25–35 hrs × $80/hr — within range</div>
+      </div>
+      <div class="pr-cell cell-margin">
+        <div class="pr-label">Effective hourly</div>
+        <div class="pr-val cv-margin">$72–$100/hr</div>
+        <div class="pr-note">AIO/GEO is specialist — commands premium vs. vanilla SEO</div>
+      </div>
+    </div>
+    <div class="rationale">
+      <strong>Market rationale:</strong> AIO/GEO optimisation is a newer discipline — most AU agencies don't price it separately yet, which means there's limited direct comparable. The closest equivalents are content strategy + schema implementation projects ($2,000–$5,000). Abel's rate here is conservative because Phase 2 overlaps with Phase 1 (efficiency gain) and the deliverable (3+ AIO appearances confirmed) is objectively measurable.
+    </div>
+    <div class="int-gate-row">
+      <span class="gate-label">Gate</span>
+      Minimum 3 confirmed AIO appearances on target queries, documented with screenshots, FAQ/HowTo schema validated → invoice triggered.
+    </div>
+  </div>
+
+  <!-- ═══ PHASE 3 ═══ -->
+  <div class="int-sl">Phase 3 — GEO Content Programme (⚠ internal breakdown)</div>
+  <div class="int-phase-block">
+    <div class="int-pb-header">
+      <div class="int-pb-num n3">3</div>
+      <div class="int-pb-meta">
+        <div class="int-pb-eyebrow e3">GEO Content · Fixed phase fee (client) · Per-piece internally</div>
+        <div class="pb-name">Generative Engine Content Programme</div>
+        <div class="pb-timeline">Months 4–8 · 20 pieces · 4–5 pieces/month · 80–120 hrs total</div>
+      </div>
+      <div class="pb-quick">
+        <div class="pq-item">
+          <div class="pq-label">Est. hours</div>
+          <div class="pq-val">80–120 hrs</div>
+        </div>
+        <div class="pq-item">
+          <div class="pq-label">Client sees</div>
+          <div class="pq-val">$8,000–$12,000</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="internal-only">⚠ INTERNAL ONLY — Per-piece breakdown below. Angela sees one phase fee only.</div>
+
+    <!-- Per-piece breakdown -->
+    <table class="per-piece-table">
+      <tr>
+        <th>Content type</th>
+        <th>Count</th>
+        <th>Hrs/piece</th>
+        <th>Internal rate/piece</th>
+        <th>Type subtotal</th>
+        <th>Schema</th>
+      </tr>
+      <tr>
+        <td>Long-form Guide (2,000+ words)</td>
+        <td class="mono">6</td>
+        <td class="mono">5–7 hrs</td>
+        <td class="mono">$500–$700 <span class="ph-tag">ph</span></td>
+        <td class="mono">$3,000–$4,200</td>
+        <td class="dim">Article + HowTo</td>
+      </tr>
+      <tr>
+        <td>Country/Market Profile page</td>
+        <td class="mono">5</td>
+        <td class="mono">4–5 hrs</td>
+        <td class="mono">$400–$500 <span class="ph-tag">ph</span></td>
+        <td class="mono">$2,000–$2,500</td>
+        <td class="dim">Article + DefinedTerm</td>
+      </tr>
+      <tr>
+        <td>Glossary entry (EOR, compliance, etc.)</td>
+        <td class="mono">5</td>
+        <td class="mono">2–3 hrs</td>
+        <td class="mono">$250–$350 <span class="ph-tag">ph</span></td>
+        <td class="mono">$1,250–$1,750</td>
+        <td class="dim">DefinedTerm</td>
+      </tr>
+      <tr>
+        <td>Hiring Story / Case Study</td>
+        <td class="mono">2</td>
+        <td class="mono">4–6 hrs</td>
+        <td class="mono">$400–$600 <span class="ph-tag">ph</span></td>
+        <td class="mono">$800–$1,200</td>
+        <td class="dim">Article</td>
+      </tr>
+      <tr>
+        <td>White Paper (strategic long-form)</td>
+        <td class="mono">2</td>
+        <td class="mono">8–12 hrs</td>
+        <td class="mono">$700–$900 <span class="ph-tag">ph</span></td>
+        <td class="mono">$1,400–$1,800</td>
+        <td class="dim">Article + FAQPage</td>
+      </tr>
+      <tr style="background:var(--paper)">
+        <td style="font-weight:700;color:var(--ink)">Total (20 pieces)</td>
+        <td class="mono" style="font-weight:700">20</td>
+        <td class="mono" style="font-weight:700">3–7 hrs avg</td>
+        <td class="mono" style="font-weight:700">$350–$600 avg</td>
+        <td class="mono" style="font-weight:700;color:var(--amber-d)">$8,450–$11,450</td>
+        <td></td>
+      </tr>
+    </table>
+
+    <div class="int-price-row">
+      <div class="pr-cell cell-client">
+        <div class="pr-label">Client quote (Angela sees this only)</div>
+        <div class="pr-val cv-client">$8,000–$12,000 <span class="ph-tag">placeholder</span></div>
+        <div class="pr-note">Presented as single phase fee. Never itemised to client.</div>
+      </div>
+      <div class="pr-cell cell-floor">
+        <div class="pr-label">Internal total (per-piece sum)</div>
+        <div class="pr-val cv-floor">$8,450–$11,450</div>
+        <div class="pr-note">Per-piece rates × volume. Client quote wraps this + overhead.</div>
+      </div>
+      <div class="pr-cell cell-margin">
+        <div class="pr-label">Strategy overhead (overhead %)</div>
+        <div class="pr-val cv-margin">~10–15%</div>
+        <div class="pr-note">Monitoring, reviews, mid-phase check, linking, schema across 20 pieces</div>
+      </div>
+    </div>
+    <div class="rationale">
+      <strong>Market rationale:</strong> AU SEO content writers charge $500–$1,500+ per long-form blog post (webapex.com.au). GEO-structured content with schema, internal linking, and citation strategy built in commands the higher end. Abel's per-piece rates ($250–$900 by type) are conservative vs. market — the volume (20 pieces) justifies a slight discount on per-piece rate in exchange for a defined contract. Presenting as a phase fee keeps client negotiation clean; if Angela asks to reduce scope, you cut pieces, not the per-piece rate.
+    </div>
+    <div class="int-gate-row">
+      <span class="gate-label">Gate</span>
+      All 20 pieces live on site, schema validated, first confirmed AI citations across ChatGPT/Perplexity documented, mid-phase review sign-off → invoice triggered.
+    </div>
+  </div>
+
+  <!-- ═══ PHASE 4 ═══ -->
+  <div class="int-sl">Phase 4 — Authority Retainer</div>
+  <div class="int-phase-block">
+    <div class="int-pb-header">
+      <div class="int-pb-num n4">4</div>
+      <div class="int-pb-meta">
+        <div class="int-pb-eyebrow e4">Authority · Monthly retainer</div>
+        <div class="pb-name">Authority &amp; Brand Signals</div>
+        <div class="pb-timeline">Months 7–11+ · 10–15 hrs/month · Ongoing, no fixed endpoint</div>
+      </div>
+      <div class="pb-quick">
+        <div class="pq-item">
+          <div class="pq-label">Hours/month</div>
+          <div class="pq-val">10–15 hrs</div>
+        </div>
+        <div class="pq-item">
+          <div class="pq-label">Client sees</div>
+          <div class="pq-val">$1,500–$2,500/mo</div>
+        </div>
+      </div>
+    </div>
+    <table class="int-table">
+      <tr>
+        <th>Monthly deliverable</th>
+        <th>Est. hours</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>LinkedIn thought leadership content</td>
+        <td class="mono">2–3 hrs</td>
+        <td class="dim">4–6 posts/month, GCA brand voice, African hiring focus</td>
+      </tr>
+      <tr>
+        <td>Guest post outreach + placement</td>
+        <td class="mono">3–5 hrs</td>
+        <td class="dim">Target: 1 placed guest post/month. Outreach + writing + submission.</td>
+      </tr>
+      <tr>
+        <td>Partner citation alignment</td>
+        <td class="mono">1–2 hrs</td>
+        <td class="dim">RCSA, ILO, GIZ directories, sector listings — ensure GCA is cited/listed</td>
+      </tr>
+      <tr>
+        <td>AI citation monitoring (bi-weekly)</td>
+        <td class="mono">2–3 hrs</td>
+        <td class="dim">Manual checks + API queries across ChatGPT, Perplexity, Gemini</td>
+      </tr>
+      <tr>
+        <td>Monthly report</td>
+        <td class="mono">1–2 hrs</td>
+        <td class="dim">Rankings, AIO appearances, citation count, trend view</td>
+      </tr>
+      <tr>
+        <td>Quarterly strategy review (1 of 3 months)</td>
+        <td class="mono">1 hr</td>
+        <td class="dim">60-min call with Angela. What's working, what to adjust, next quarter plan.</td>
+      </tr>
+    </table>
+    <div class="int-price-row">
+      <div class="pr-cell cell-client">
+        <div class="pr-label">Client quote (monthly)</div>
+        <div class="pr-val cv-client">$1,500–$2,500/mo <span class="ph-tag">placeholder</span></div>
+        <div class="pr-note">Confirmed at Phase 4 start. 30-day pause notice.</div>
+      </div>
+      <div class="pr-cell cell-floor">
+        <div class="pr-label">Floor rate check (at $130/hr)</div>
+        <div class="pr-val cv-floor">$1,300–$1,950/mo</div>
+        <div class="pr-note">10–15 hrs × $130/hr — quote is above floor ✓</div>
+      </div>
+      <div class="pr-cell cell-margin">
+        <div class="pr-label">Effective hourly</div>
+        <div class="pr-val cv-margin">$120–$175/hr</div>
+        <div class="pr-note">Mid-range for AU SEO consultant retainer work. Justified.</div>
+      </div>
+    </div>
+    <div class="rationale">
+      <strong>Market rationale:</strong> Australian SMB SEO retainers average $2,500–$3,500/month in 2026 (workspacein.com.au). Abel's range ($1,500–$2,500) is intentionally positioned at the lower-to-mid end because: (a) GCA is not a full-agency client, (b) this is an established relationship, and (c) Phase 4 compounds on Phases 1–3 — the lift from prior phases makes Phase 4 work more efficient. If GCA is seeing strong AI citation growth, you have leverage to move toward $2,500. Monthly billing, no lock-in = lower risk to Angela = easier to start.
+    </div>
+    <div class="int-gate-row" style="border-top:1px solid var(--border)">
+      <span class="gate-label" style="background:var(--coral-l);color:var(--coral-d);border:none">Billing</span>
+      Monthly invoice raised on 1st of each month. 30 days written notice to pause or end. Rate confirmed and signed before Phase 4 begins.
+    </div>
+  </div>
+
+  <!-- ═══ PHASE 5 ═══ -->
+  <div class="int-sl">Phase 5 — AI Engineering</div>
+  <div class="int-phase-block">
+    <div class="int-pb-header">
+      <div class="int-pb-num n5">5</div>
+      <div class="int-pb-meta">
+        <div class="int-pb-eyebrow e5">Engineering · Fixed fee</div>
+        <div class="pb-name">AI Engineering &amp; Automation</div>
+        <div class="pb-timeline">Months 10–18 · 20–30 hrs build + 2–3 hrs/month ongoing</div>
+      </div>
+      <div class="pb-quick">
+        <div class="pq-item">
+          <div class="pq-label">Est. hours</div>
+          <div class="pq-val">20–30 hrs</div>
+        </div>
+        <div class="pq-item">
+          <div class="pq-label">Client sees</div>
+          <div class="pq-val">$2,000–$3,500</div>
+        </div>
+      </div>
+    </div>
+    <table class="int-table">
+      <tr>
+        <th>Work stream</th>
+        <th>Est. hours</th>
+        <th>Notes</th>
+      </tr>
+      <tr>
+        <td>llms.txt implementation</td>
+        <td class="mono">2–3 hrs</td>
+        <td class="dim">Declare GCA content to AI crawlers directly. New standard.</td>
+      </tr>
+      <tr>
+        <td>LangChain + OpenAI API tracking scripts</td>
+        <td class="mono">8–12 hrs</td>
+        <td class="dim">Automated prompt-checking pipeline, ~$20/mo API cost (GCA's)</td>
+      </tr>
+      <tr>
+        <td>Perplexity citation tracking endpoint</td>
+        <td class="mono">4–6 hrs</td>
+        <td class="dim">Programmatic citation checks via Perplexity API (~$20/mo GCA's cost)</td>
+      </tr>
+      <tr>
+        <td>Citation dashboard</td>
+        <td class="mono">4–6 hrs</td>
+        <td class="dim">Simple UI: citation count, engine breakdown, trend view. Angela-readable.</td>
+      </tr>
+      <tr>
+        <td>Documentation + handover</td>
+        <td class="mono">2–3 hrs</td>
+        <td class="dim">GCA can run monitoring independently after handover</td>
+      </tr>
+    </table>
+    <div class="int-price-row">
+      <div class="pr-cell cell-client">
+        <div class="pr-label">Client quote (what Angela sees)</div>
+        <div class="pr-val cv-client">$2,000–$3,500 <span class="ph-tag">placeholder</span></div>
+        <div class="pr-note">Confirm before Phase 5 kicks off</div>
+      </div>
+      <div class="pr-cell cell-floor">
+        <div class="pr-label">Floor rate check (at $100/hr)</div>
+        <div class="pr-val cv-floor">$2,000–$3,000</div>
+        <div class="pr-note">20–30 hrs × $100/hr — within range</div>
+      </div>
+      <div class="pr-cell cell-margin">
+        <div class="pr-label">Effective hourly</div>
+        <div class="pr-val cv-margin">$80–$120/hr</div>
+        <div class="pr-note">Technical SEO dev work. Justified at this rate.</div>
+      </div>
+    </div>
+    <div class="rationale">
+      <strong>Market rationale:</strong> Technical SEO + custom scripting in AU runs $150–$300/hr. Abel's effective rate here ($80–$120/hr) is significantly below market — justified because Phase 5 builds on existing infrastructure from Phases 0–4 (no setup overhead), and it's a defined scope with a clean handover endpoint. If Angela pushes back on price, you can point to the value-add: GCA will have a citation tracking system that most competitors don't have at any price.
+    </div>
+    <div class="int-gate-row">
+      <span class="gate-label">Gate</span>
+      Tracking live, dashboard delivered, llms.txt validated, documentation complete, handover call with Angela done → invoice triggered.
+    </div>
+  </div>
+
+  <!-- ═══ FULL SUMMARY ═══ -->
+  <div class="int-sl">Full project summary — Abel's fees</div>
+  <table class="sum-table">
+    <tr>
+      <th>Phase</th>
+      <th>Model</th>
+      <th>Est. hours</th>
+      <th>Floor check</th>
+      <th>Client quote</th>
+    </tr>
+    <tr>
+      <td>Phase 0 — WordPress Build</td>
+      <td class="dim">Fixed fee</td>
+      <td class="mono">38–59 hrs</td>
+      <td class="dim" style="font-family:'IBM Plex Mono',monospace">$3,800–$5,900</td>
+      <td class="mono" style="color:var(--teal-d)">$4,500–$6,500 <span class="ph-tag">ph</span></td>
+    </tr>
+    <tr>
+      <td>Phase 1 — SEO Foundations</td>
+      <td class="dim">Fixed fee</td>
+      <td class="mono">30–40 hrs</td>
+      <td class="dim" style="font-family:'IBM Plex Mono',monospace">$2,550–$3,400</td>
+      <td class="mono" style="color:var(--teal-d)">$2,500–$3,500 <span class="ph-tag">ph</span></td>
+    </tr>
+    <tr>
+      <td>Phase 2 — AIO Readiness</td>
+      <td class="dim">Fixed fee</td>
+      <td class="mono">25–35 hrs</td>
+      <td class="dim" style="font-family:'IBM Plex Mono',monospace">$2,000–$2,800</td>
+      <td class="mono" style="color:var(--teal-d)">$2,000–$3,000 <span class="ph-tag">ph</span></td>
+    </tr>
+    <tr>
+      <td>Phase 3 — GEO Content (20 pieces)</td>
+      <td class="dim">Fixed phase fee</td>
+      <td class="mono">80–120 hrs</td>
+      <td class="dim" style="font-family:'IBM Plex Mono',monospace">$8,450–$11,450</td>
+      <td class="mono" style="color:var(--teal-d)">$8,000–$12,000 <span class="ph-tag">ph</span></td>
+    </tr>
+    <tr>
+      <td>Phase 4 — Authority Retainer (5 mo shown)</td>
+      <td class="dim">Monthly retainer</td>
+      <td class="mono">10–15 hrs/mo</td>
+      <td class="dim" style="font-family:'IBM Plex Mono',monospace">$1,300–$1,950/mo</td>
+      <td class="mono" style="color:var(--teal-d)">$1,500–$2,500/mo <span class="ph-tag">ph</span></td>
+    </tr>
+    <tr>
+      <td>Phase 5 — AI Engineering</td>
+      <td class="dim">Fixed fee</td>
+      <td class="mono">20–30 hrs</td>
+      <td class="dim" style="font-family:'IBM Plex Mono',monospace">$2,000–$3,000</td>
+      <td class="mono" style="color:var(--teal-d)">$2,000–$3,500 <span class="ph-tag">ph</span></td>
+    </tr>
+  </table>
+
+  <div class="effective-rate">
+    <div class="er-cell">
+      <div class="er-label">Total project (fixed phases)</div>
+      <div class="er-val">$19,000–$28,500</div>
+      <div class="er-note">Ph 0+1+2+3+5 combined</div>
+    </div>
+    <div class="er-cell">
+      <div class="er-label">Phase 4 retainer (5 months)</div>
+      <div class="er-val">$7,500–$12,500</div>
+      <div class="er-note">At $1,500–$2,500/mo × 5</div>
+    </div>
+    <div class="er-cell">
+      <div class="er-label">18-month total (Abel)</div>
+      <div class="er-val">$26,500–$41,000</div>
+      <div class="er-note">Excl. GCA tools ($487–$967/yr)</div>
+    </div>
+  </div>
+
+  <div style="background:var(--paper2);border-radius:var(--r);padding:14px 16px;font-size:12px;color:var(--ink2);line-height:1.8;margin-bottom:8px">
+    <strong style="display:block;margin-bottom:6px;font-size:13px">Pricing strategy notes</strong>
+    <strong>Negotiation anchor:</strong> Phase 3 is the highest-value phase. If Angela pushes back on total, first offer to split Phase 3 into two tranches of 10 pieces (invoice at piece 10 and piece 20) rather than reducing the per-piece rate.<br>
+    <strong>Phase 4 flexibility:</strong> If Angela is hesitant on the retainer, offer a 3-month trial at a confirmed rate, then review. This de-risks it for her without discounting.<br>
+    <strong>Phase 5 upsell:</strong> Frame Phase 5 as optional infrastructure — present it at the Phase 3 gate review when citation momentum is visible. Easier sell once she can see the citations happening.<br>
+    <strong>All prices exclude GST</strong> if billing to an Australian entity. Clarify in agreement.
+  </div>
+
+  <div style="background:var(--ink);border-radius:var(--r);padding:12px 16px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:rgba(255,255,255,0.3);line-height:1.8;text-align:center">
+    INTERNAL DOCUMENT — GCA Search Visibility Project · Abel Programkingabel · 2025–2026 · Do not share with client
+  </div>
+
+</div>
+</div>
+</div>
+</div>
+    <!-- ═══ PHASE PAGES ═══ -->
+    <div class="page" id="page-p0"></div>
+    <div class="page" id="page-p1"></div>
+    <div class="page" id="page-p2"></div>
+    <div class="page" id="page-p3"></div>
+    <div class="page" id="page-p4"></div>
+    <div class="page" id="page-p5"></div>
+
+  </div>
+</div>
+</div>
+
+<!-- STATUS POPUP -->
+<div class="spop" id="spop">
+  <div class="sopt" onclick="setStatus('todo')"><div class="sopt-dot" style="background:var(--ink4)"></div>Not Started</div>
+  <div class="sopt" onclick="setStatus('active')"><div class="sopt-dot" style="background:var(--amber)"></div>In Progress</div>
+  <div class="sopt" onclick="setStatus('review')"><div class="sopt-dot" style="background:var(--purple)"></div>Awaiting Approval</div>
+  <div class="sopt" onclick="setStatus('done')"><div class="sopt-dot" style="background:var(--teal)"></div>Complete ✓</div>
+  <div class="sopt" onclick="setStatus('blocked')"><div class="sopt-dot" style="background:var(--coral)"></div>Blocked</div>
+</div>
+
+<!-- REVIEW MODAL -->
+<div class="modal-overlay" id="review-modal">
+  <div class="modal">
+    <div class="modal-title">Add Phase Review <button class="modal-close" onclick="closeReviewModal()">×</button></div>
+    <div style="margin-bottom:8px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin-bottom:5px">Health Status</div>
+      <div style="display:flex;gap:8px">
+        <button onclick="setReviewHealth('green')" id="rh-green" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:var(--r-sm);background:#fff;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:#15803d">🟢 Healthy</button>
+        <button onclick="setReviewHealth('amber')" id="rh-amber" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:var(--r-sm);background:#fff;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--amber-d)">🟡 Drifting</button>
+        <button onclick="setReviewHealth('red')" id="rh-red" style="flex:1;padding:8px;border:1px solid var(--border);border-radius:var(--r-sm);background:#fff;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;font-weight:600;color:var(--coral-d)">🔴 Attention</button>
+      </div>
+    </div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin:10px 0 5px">What changed / findings</div>
+    <textarea class="modal-input" id="review-text" style="min-height:80px;resize:vertical" placeholder="What has changed in the AI/SEO landscape? Are gate condition metrics still being met? Any remediation needed?"></textarea>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;color:var(--ink3);margin:0 0 5px">Action items (if any)</div>
+    <textarea class="modal-input" id="review-actions" style="min-height:50px;resize:vertical" placeholder="Remediation tasks, content to update, schema to fix…"></textarea>
+    <button class="modal-btn" onclick="saveReview()">Save Review</button>
+  </div>
+</div>
+
+<script>
+/* ══════════════════════ DATA ══════════════════════ */
+const SL={'todo':'Not Started','active':'In Progress','review':'Awaiting Approval','done':'Complete ✓','blocked':'Blocked'};
+const SC={'todo':'s-todo','active':'s-active','review':'s-review','done':'s-done','blocked':'s-blocked'};
+const PCOL={purple:'var(--purple)',teal:'var(--teal)',blue:'var(--blue)',amber:'var(--amber)',coral:'var(--coral)',slate:'var(--slate)'};
+const REVIEW_CADENCE=[null,'6 months','3 months','6 weeks','8 weeks','monthly','3 months'];
+
+const PHASES=[
+  {id:0,key:'p0',title:'Platform Migration',sub:'Preparation — enables all outcomes',col:'purple',timeline:'Weeks 1–6',hrs:'38–59 hrs (Abel as dev)',cost:'$487/yr tools only',outcomes:'Enables Outcomes 1–5',
+   gate:'WordPress live on WP Engine. Core Web Vitals 90+ mobile. All pages migrated and resolving. GA4 collecting sessions. Zero broken links. Angela and Ross sign-off on look and feel.',
+   reviewCadence:'Every 6 months',
+   steps:[
+    {id:'0.1',title:'WP Engine account and WordPress installed',owner:'Abel',hrs:3,cost:'$25/mo',desc:'Create WP Engine Startup account. Install WordPress. Confirm staging URL live.',outcome:'WordPress on WP Engine staging. URL accessible and loading. Confirmed by Abel.',metrics:'Staging URL resolves. WordPress admin accessible. WP Engine dashboard shows site active.'},
+    {id:'0.2',title:'WordPress specification written',owner:'Abel',hrs:5,cost:'—',desc:'Write the full developer brief: custom content types (White Papers, Employer Stories, Candidate Stories, News), plugin list (RankMath Pro, ACF Pro, Gravity Forms, Mailchimp), design requirements, schema hooks, analytics specification. Abel builds from this doc.',outcome:'Complete specification document. Abel can build from it without revisiting decisions.',metrics:'Document covers: content types ✓, plugin list ✓, design spec ✓, schema requirements ✓, analytics layer ✓.'},
+    {id:'0.3',title:'Theme built — GCA design replicated',owner:'Abel',hrs:20,cost:'—',desc:'Abel builds the WordPress theme replicating GCA\'s current visual identity: typography, colour palette, layout, component patterns. Mobile-first. No visual change from current site — this is a platform change, not a redesign.',outcome:'WordPress theme live on staging. Visually identical to current site. Angela and Ross sign-off.',metrics:'Angela/Ross sign-off obtained. Desktop + mobile review passed. All pages rendering correctly.'},
+    {id:'0.4',title:'Plugins installed and configured',owner:'Abel',hrs:6,cost:'$187/yr plugins',desc:'Install and configure: RankMath Pro (schema, meta, sitemap), ACF Pro (custom content types), Gravity Forms Basic (enquiry forms). Configure Mailchimp integration. Disable WP Rocket — WP Engine EverCache handles caching.',outcome:'All plugins installed. RankMath configured for Organisation schema. ACF content types created. Forms submitting.',metrics:'RankMath dashboard: no warnings. ACF content types: White Papers, Stories, Glossary, News all accessible. Form test submission received.'},
+    {id:'0.5',title:'Analytics layer implemented',owner:'Abel',hrs:4,cost:'—',desc:'Deploy GTM container. Configure GA4 property. Link GA4 to Search Console. Map all events. Set up enquiry form conversion tracking. Confirm all tracking firing.',outcome:'GA4 real-time view shows live sessions. Zero errors in GTM debug. Search Console linked.',metrics:'GA4 real-time: sessions visible ✓. GTM debug: zero errors ✓. GSC: property verified ✓. Form conversion: tracked ✓.'},
+    {id:'0.6',title:'Content migrated from Squarespace',owner:'Abel',hrs:5,cost:'—',desc:'Migrate all existing Squarespace pages to WordPress. Preserve Vimeo embeds with lazy loading. Forms submitting to correct inbox. All content reproduced accurately.',outcome:'Every existing page live on WordPress staging. All Vimeo embeds loading. All forms tested. Zero content missing.',metrics:'Page count matches Squarespace. Vimeo embeds: lazy loading active. Form submissions: inbox confirmed. Content diff: zero gaps.'},
+    {id:'0.7',title:'QA — all checks passing',owner:'Abel',hrs:4,cost:'—',desc:'Run PageSpeed Insights on all key pages. Crawl with Screaming Frog. Validate schema in Rich Results Test. Test SSL. Test all forms. Test all internal links. Fix any issues found.',outcome:'PageSpeed 90+ mobile. Zero 404s. Zero schema errors. SSL active. All forms and links working.',metrics:'PageSpeed Insights: 90+ mobile ✓. Screaming Frog: 0 broken links ✓. Rich Results Test: 0 errors ✓. SSL: active ✓.'},
+    {id:'0.8',title:'DNS cutover and go-live',owner:'Abel',hrs:2,cost:'—',desc:'Transfer domain DNS from Squarespace to WP Engine. Monitor propagation. Confirm live on all devices. Submit new sitemap to Search Console. Squarespace subscription paused or cancelled.',outcome:'globalcareers.africa resolving to WordPress. Sitemap submitted. Squarespace decommissioned. Site live.',metrics:'DNS propagation: complete ✓. Site live on desktop + mobile ✓. Sitemap in GSC: submitted ✓. Squarespace: cancelled/paused ✓.'},
+  ]},
+  {id:1,key:'p1',title:'SEO Foundations',sub:'Outcome 1: GCA is Findable',col:'teal',timeline:'Weeks 7–10',hrs:'30–40 hrs',cost:'Included in Phase 0 tools',outcomes:'Outcome 1 — GCA is Findable',
+   gate:'All pages indexed by Google. 100% meta title + description coverage. Organization schema validated. 50-query keyword map complete. Baseline impressions documented in Search Console.',
+   reviewCadence:'Every 3 months',
+   steps:[
+    {id:'1.1',title:'Search Console baseline report',owner:'Abel',hrs:1,cost:'—',desc:'Pull current GSC data. Document every query surfacing GCA with impressions, position, CTR. This is the before picture.',outcome:'Baseline report saved and date-stamped. Shared with Angela.',metrics:'Impressions: X. Queries: X. Avg position: X. Date: confirmed.'},
+    {id:'1.2',title:'Site crawl — zero issues',owner:'Abel',hrs:3,cost:'—',desc:'Run Screaming Frog across WordPress site. Identify and fix: missing meta titles, duplicate titles, missing descriptions, broken links, missing alt tags.',outcome:'Screaming Frog: zero missing titles, zero missing descriptions, zero broken links.',metrics:'Missing titles: 0 ✓. Missing descriptions: 0 ✓. Broken links: 0 ✓. Duplicate titles: 0 ✓.'},
+    {id:'1.3',title:'50-query keyword map built',owner:'Abel',hrs:6,cost:'—',desc:'Use AlsoAsked.com, AnswerThePublic, and GSC to identify 50 priority queries. Spreadsheet: query → intent → volume → mapped page.',outcome:'Spreadsheet of 50 queries with intent, volume, and mapped page. Shared with Angela.',metrics:'50 queries documented ✓. Each mapped to a page ✓. Shared with Angela ✓.'},
+    {id:'1.4',title:'Meta titles and descriptions live',owner:'Abel → Angela',hrs:5,cost:'—',desc:'Abel writes new meta title (<60 chars) and description (<160 chars) for every page. Angela reviews. Abel implements via RankMath.',outcome:'100% of pages have unique keyword-intentional titles and descriptions confirmed by re-crawl.',metrics:'Pages with unique title: 100% ✓. Pages with description: 100% ✓. Angela approval: documented ✓.'},
+    {id:'1.5',title:'Partner credibility in prose',owner:'Abel → Angela',hrs:4,cost:'—',desc:'150 words per partner (RCSA, ILO, GIZ, Rendeavour, CCI Global, Worknation) explaining the relationship. Text on page — not logos only. AI reads text.',outcome:'Each partner has 150+ words of prose live. Confirmed by page review.',metrics:'Partners with prose: 6/6 ✓. Word count per partner: 150+ ✓. Angela approval: documented ✓.'},
+    {id:'1.6',title:'Thin pages expanded to 400+ words',owner:'Abel → Angela',hrs:15,cost:'—',desc:'Homepage, Smartsourcing, Build a Global Team, Why Africa, Verification Promise. Each 400+ words, answer-first, proper H2/H3. Angela approves before publishing.',outcome:'All 5 core pages at 400+ words. Answer-first opening. Angela approval documented.',metrics:'Pages at 400+ words: 5/5 ✓. Answer-first format: 5/5 ✓. Angela approval: documented ✓.'},
+    {id:'1.7',title:'Organization schema validated',owner:'Abel',hrs:2,cost:'—',desc:'Configure RankMath Organization schema: name, URL, logo, founding, description, service areas, social profiles, partners. Validate in Rich Results Test.',outcome:'Rich Results Test: zero errors on homepage schema. Screenshot saved.',metrics:'Rich Results Test: 0 errors ✓. Schema fields complete: name, URL, logo, description, partners ✓.'},
+    {id:'1.8',title:'Core Web Vitals — 90+ confirmed post-content',owner:'Abel',hrs:1,cost:'—',desc:'Re-run PageSpeed Insights after all content additions. Confirm 90+ maintained. Fix if dropped before Phase 2.',outcome:'PageSpeed 90+ mobile after all Phase 1 content. Screenshot saved.',metrics:'PageSpeed mobile: 90+ ✓. LCP under 2.5s ✓. CLS under 0.1 ✓.'},
+  ]},
+  {id:2,key:'p2',title:'AIO Readiness',sub:'Outcome 2: GCA is the Answer (Google)',col:'blue',timeline:'Weeks 11–16',hrs:'25–35 hrs + 1 hr/wk',cost:'—',outcomes:'Outcome 2 — GCA is the Answer',
+   gate:'50 buyer prompts mapped and baseline tested. All pages answer-first. FAQ schema live and validated on all key pages. GCA in minimum 3 Google AI Overviews — dated screenshots.',
+   reviewCadence:'Every 6 weeks',
+   steps:[
+    {id:'2.1',title:'Prompt map built — baseline tested',owner:'Abel',hrs:8,cost:'—',desc:'50 natural language buyer queries. Test in ChatGPT, Perplexity, Google AIO. Document who appears. GCA baseline: 0%. This is the benchmark all GEO is measured against.',outcome:'50 prompts documented. Baseline: X% GCA, X% competitors. Dated. Saved. Shared with Angela.',metrics:'Prompts documented: 50 ✓. Tested across: ChatGPT, Perplexity, Google ✓. Baseline date-stamped ✓.'},
+    {id:'2.2',title:'Content restructured — answer-first',owner:'Abel → Angela',hrs:10,cost:'—',desc:'Every key page: first sentence directly answers the implied question. All H2 headings as questions. No preamble. Angela approves all rewrites.',outcome:'100% of pages pass answer-first editorial checklist. Angela approval documented.',metrics:'Pages with answer-first opening: 100% ✓. H2s as questions: 100% ✓. Angela approval: documented ✓.'},
+    {id:'2.3',title:'FAQ blocks written — all info pages',owner:'Abel → Angela',hrs:8,cost:'—',desc:'3–5 Q&A pairs per page. Plain declarative language. Questions mapped from the prompt map. Angela reviews and approves before implementation.',outcome:'Every information page has 3–5 approved FAQ pairs. Angela sign-off documented.',metrics:'Pages with FAQs: X/X ✓. Pairs per page: 3–5 ✓. Angela approval: documented ✓.'},
+    {id:'2.4',title:'FAQ schema implemented — zero errors',owner:'Abel',hrs:5,cost:'—',desc:'Implement FAQ schema (JSON-LD via RankMath) on every FAQ page. Test each in Rich Results Test. Fix all errors.',outcome:'Rich Results Test: zero schema errors across all FAQ pages.',metrics:'Pages with FAQ schema: X ✓. Rich Results errors: 0 ✓. Tested: all pages ✓.'},
+    {id:'2.5',title:'3+ AIO appearances confirmed',owner:'Abel',hrs:2,cost:'—',desc:'Test all 50 prompts in Google with AI Overviews enabled. Document every GCA AIO appearance. If fewer than 3, return to Steps 2.2–2.3 before proceeding.',outcome:'Minimum 3 Google AI Overview appearances. Dated screenshots saved. Phase 3 gate open.',metrics:'AIO appearances: 3+ ✓. Screenshots: dated and saved ✓. Prompt source for each: documented ✓.'},
+  ]},
+  {id:3,key:'p3',title:'GEO Content Programme',sub:'Outcomes 2+3: GCA is the Answer and the Authority',col:'amber',timeline:'Weeks 17–34',hrs:'80–120 hrs (4–5 months)',cost:'RankMath Content AI: $7.99/mo',outcomes:'Outcomes 2 & 3',
+   gate:'20 content pieces published across all 5 types. GCA cited in minimum 10 of 50 tracked prompts across ChatGPT, Perplexity, Google AIO. Organic impressions 3× Phase 1 baseline.',
+   reviewCadence:'Every 8 weeks',
+   steps:[
+    {id:'3.1',title:'20 content briefs written and approved',owner:'Abel → Angela',hrs:8,cost:'—',desc:'One brief per piece: topic, target prompt, content type, schema, word count, data needed from Angela. All 20 approved by Angela before writing begins. Writing does not start until all approved.',outcome:'20 briefs approved by Angela. Writing begins. Zero pending.',metrics:'Briefs written: 20/20 ✓. Angela approval: 20/20 ✓. Data gaps identified: documented ✓.'},
+    {id:'3.2',title:'8 definition pages live',owner:'Abel → Angela',hrs:32,cost:'—',desc:'"What is an EOR in Africa?", "What is the GCA Programme?", "What is Smartsourcing?", "What does talent verification mean?" and 4 more. First sentence = direct definition. Article + DefinedTerm schema. Angela approval before publish.',outcome:'8 definition pages live. Validated schema. Direct definition opening on each.',metrics:'Pages live: 8 ✓. Schema valid: 8/8 ✓. Answer-first: 8/8 ✓. Angela approval: documented ✓.'},
+    {id:'3.3',title:'4 process guides live',owner:'Abel → Angela',hrs:20,cost:'—',desc:'"How to hire remote developers in Kenya from Australia", "How to build a global team from Africa compliantly", "How the GCA 7-stage verification works", and 1 more. HowTo schema on each.',outcome:'4 process guides live. HowTo schema validated. Each mapped to a specific buyer prompt.',metrics:'Guides live: 4 ✓. HowTo schema valid: 4/4 ✓. Prompt mapped: 4/4 ✓.'},
+    {id:'3.4',title:'3 comparison pages live',owner:'Abel → Angela',hrs:15,cost:'—',desc:'"Hiring African talent vs India vs Eastern Europe", "GCA vs Deel vs Remote", "Best platforms to hire remote talent in Africa 2026". Structured tables. FAQ schema. Angela approval required — strategically sensitive.',outcome:'3 comparison pages live. Structured tables included. FAQ schema valid. Angela approval documented.',metrics:'Pages live: 3 ✓. Tables included: 3/3 ✓. FAQ schema valid: 3/3 ✓. Angela approval: documented ✓.'},
+    {id:'3.5',title:'2 data and benchmark pages live',owner:'Abel + Angela',hrs:8,cost:'—',desc:'"African professional salary benchmarks 2026" and "Talent availability by country: Kenya, Nigeria, South Africa, Ghana". Angela provides raw data. Abel structures, writes, publishes with Article schema.',outcome:'2 data pages live. Minimum 5 original GCA data points per page. Article schema validated.',metrics:'Pages live: 2 ✓. Original data points: 5+ per page ✓. Article schema valid: 2/2 ✓.'},
+    {id:'3.6',title:'10 glossary pages live',owner:'Abel → Angela',hrs:20,cost:'—',desc:'"EOR Africa", "Remote hiring compliance Africa", "Work permits: Kenya vs Nigeria", "Cross-border payroll Africa" and 6 more. 300–500 words each. DefinedTerm schema. Own URL per term.',outcome:'10 glossary pages live. DefinedTerm schema validated. Each on its own clean URL.',metrics:'Pages live: 10 ✓. DefinedTerm schema valid: 10/10 ✓. Unique URLs: 10/10 ✓.'},
+    {id:'3.7',title:'Citation test: 10+ confirmed',owner:'Abel',hrs:3,cost:'—',desc:'Re-test all 50 prompts across ChatGPT, Perplexity, Google AIO. Document every GCA citation. Compare to Phase 2 baseline. Identify gaps. If <10, address gaps before Phase 4.',outcome:'GCA cited in 10+ of 50 tracked prompts. Organic impressions 3× Phase 1 baseline. Screenshots saved.',metrics:'Prompt citations: 10+ ✓. GSC impressions: 3× baseline ✓. Competitor gap analysis: complete ✓.'},
+  ]},
+  {id:4,key:'p4',title:'Authority & Off-Site Signals',sub:'Outcome 4: GCA is Trusted',col:'coral',timeline:'Weeks 35–50',hrs:'10–15 hrs/month ongoing',cost:'—',outcomes:'Outcome 4 — GCA is Trusted',
+   gate:'15 new referring domains from content and PR. GCA in 5+ external AI-indexed sources. Appearing in Perplexity for 5+ tracked prompts. LinkedIn 2/month cadence sustained for 3 consecutive months.',
+   reviewCadence:'Monthly',
+   steps:[
+    {id:'4.1',title:'Partner page text alignment',owner:'Abel + Angela',hrs:3,cost:'—',desc:'Abel writes consistent 100-word GCA description for each partner. Angela coordinates with contacts to update their listings. Language identical across all partner sites.',outcome:'All partner listings updated with consistent GCA description. Live on each partner site.',metrics:'Partners updated: 6/6 ✓. Language consistency: confirmed ✓. URLs saved: documented ✓.'},
+    {id:'4.2',title:'LinkedIn article cadence — 2/month for 3 months',owner:'Abel → Angela',hrs:18,cost:'—',desc:'6 LinkedIn articles over 3 months. Content adapted from Phase 3 website pieces. Abel writes, Angela approves. LinkedIn indexed by Perplexity — second citation surface.',outcome:'6 LinkedIn articles published. Each 500–800 words. Average 500+ views. Cadence sustained.',metrics:'Articles published: 6 ✓. Avg views: 500+ ✓. Cadence: 3 consecutive months ✓.'},
+    {id:'4.3',title:'3 guest posts in industry publications',owner:'Abel → Angela',hrs:24,cost:'—',desc:'Target publications: RCSA magazine, HR Daily, African Business. Pitch, write (700–1000 words), manage editorial. Each links back to a GCA content page.',outcome:'3 guest posts live. Each with backlink to globalcareers.africa confirmed in Ahrefs.',metrics:'Posts live: 3 ✓. Backlinks confirmed: 3 ✓. Domains: industry relevant ✓.'},
+    {id:'4.4',title:'Wikipedia strategy assessed',owner:'Abel',hrs:3,cost:'—',desc:'Research notability guidelines. Audit existing independent GCA sources. Determine if threshold met. If not, document exactly what additional press coverage is needed.',outcome:'Assessment complete. Decision: create now / needs X more independent sources. Strategy documented.',metrics:'Assessment complete ✓. Independent sources counted: X ✓. Decision documented ✓.'},
+    {id:'4.5',title:'1 media or podcast appearance',owner:'Angela lead, Abel support',hrs:5,cost:'—',desc:'Angela identifies and pitches one podcast or media opportunity (HR, international recruitment, African business, global remote work). Abel prepares talking points. Appearance completed and published.',outcome:'One media appearance completed and published. Content indexed by Google and Perplexity.',metrics:'Appearance: completed ✓. Published: confirmed ✓. Indexed by Google: confirmed ✓.'},
+    {id:'4.6',title:'Perplexity citations: 5+ confirmed',owner:'Abel',hrs:2,cost:'—',desc:'Test all 50 tracked prompts in Perplexity. Document every GCA citation. Perplexity pulls from LinkedIn, news, niche sources — Phase 4 work should show here.',outcome:'GCA cited in 5+ Perplexity responses. Dated screenshots. Ahrefs shows 15+ new referring domains.',metrics:'Perplexity citations: 5+ ✓. Referring domains: 15+ in Ahrefs ✓. Screenshots: dated ✓.'},
+  ]},
+  {id:5,key:'p5',title:'Engineering & Automation',sub:'Outcome 5: GCA is Intelligent',col:'slate',timeline:'Weeks 45–72',hrs:'20–30 hrs build + 2–3/mo',cost:'~$40/mo API costs',outcomes:'Outcome 5 — GCA is Intelligent',
+   gate:'Automated tracking live: 50 prompts tested weekly, auto-logged. GCA cited in 25%+ of tracked prompts. /knowledge/ endpoint live. llms.txt deployed.',
+   reviewCadence:'Every 3 months',
+   steps:[
+    {id:'5.1',title:'Automated prompt tracking script live',owner:'Abel',hrs:12,cost:'~$40/mo APIs',desc:'Python script via LangChain. Runs 50 prompts against ChatGPT and Perplexity APIs every Monday. Logs: cited? Position? Framing? Auto-logs to Google Sheet. Replaces all manual weekly testing.',outcome:'Script runs automatically every Monday. Results in Google Sheet by end of day. No manual intervention.',metrics:'Script: running automatically ✓. Consecutive successful runs: 2+ ✓. Google Sheet populated: ✓.'},
+    {id:'5.2',title:'Semantic content gap analysis',owner:'Abel',hrs:8,cost:'—',desc:'Use sentence-transformers (Python) to analyse all GCA content against 50 tracked prompts. Output: deep, superficial, or no coverage per prompt. Content gap report produced.',outcome:'Gap report produced. Top 5 underperforming prompts identified. New briefs drafted for each.',metrics:'Gap report: complete ✓. Underperforming prompts: identified ✓. New briefs: drafted ✓.'},
+    {id:'5.3',title:'/knowledge/ endpoint live',owner:'Abel',hrs:5,cost:'—',desc:'Custom WordPress REST API endpoint at globalcareers.africa/wp-json/gca/v1/knowledge. Returns structured JSON of GCA key facts, programme details, definitions. AI crawlers consume directly.',outcome:'Endpoint live. Returns valid JSON. Tested with curl. AI-readable without browser rendering.',metrics:'Endpoint URL: live ✓. JSON valid: confirmed by curl ✓. Response time: under 200ms ✓.'},
+    {id:'5.4',title:'llms.txt deployed',owner:'Abel',hrs:2,cost:'—',desc:'Create and deploy llms.txt at globalcareers.africa/llms.txt. Gives AI crawlers structured guidance: what GCA covers, authoritative pages, key definitions.',outcome:'llms.txt accessible at correct URL. Validated against llms.txt specification.',metrics:'URL accessible: ✓. Spec compliance: validated ✓. Content: covers all 5 content type categories ✓.'},
+  ]},
+];
+
+/* ══════════════════════ STATE ══════════════════════ */
+let TASKS={};         // {taskId: status}
+let THREADS={};       // {taskId: [{author,time,text,link}]}
+let NOTES=[];         // [{id,text,tag,time}]
+let NOTIFS=[];        // [{id,icon,text,time,read}]
+let BRIEFS={};        // {phaseId: {incoming:{text,signoff,date}, reviews:[{date,health,text,actions}]}}
+let startDate=null;
+let currentPage='dashboard';
+let activeTaskId=null;
+let activeReviewPhaseId=null;
+let activeReviewHealth='green';
+
+/* ══════════════════════ STORAGE ══════════════════════ */
+const store={
+  async load(){
+    try{
+      if(!window.storage) return;
+      const load=async(k,def)=>{try{const r=await window.storage.get(k);return r?JSON.parse(r.value):def;}catch{return def;}};
+      TASKS=await load('gca_tasks',{});
+      THREADS=await load('gca_threads',{});
+      NOTES=await load('gca_notes',[]);
+      NOTIFS=await load('gca_notifs',[]);
+      BRIEFS=await load('gca_briefs',{});
+      startDate=await load('gca_start',null);
+      if(!startDate){startDate=new Date().toISOString().split('T')[0];await window.storage.set('gca_start',JSON.stringify(startDate));}
+    }catch(e){if(!startDate)startDate=new Date().toISOString().split('T')[0];}
+  },
+  async save(key,val){try{if(window.storage)await window.storage.set(key,JSON.stringify(val));}catch(e){}}
+};
+
+function getS(id){return TASKS[id]||'todo';}
+function allTasks(){return PHASES.flatMap(p=>p.steps);}
+function phaseProg(p){const d=p.steps.filter(s=>getS(s.id)==='done').length;return{done:d,total:p.steps.length,pct:Math.round(d/p.steps.length*100)};}
+function totalProg(){const t=allTasks();const d=t.filter(x=>getS(x.id)==='done').length;const a=t.filter(x=>getS(x.id)==='active').length;return{done:d,active:a,total:t.length,pct:Math.round(d/t.length*100)};}
+function activePhase(){for(const p of PHASES){const{done,total}=phaseProg(p);if(done<total)return p;}return PHASES[PHASES.length-1];}
+function currentFocus(){const ap=activePhase();const s=ap.steps.find(x=>getS(x.id)!=='done');return s?{phase:ap,step:s}:null;}
+function phaseHealth(id){const br=BRIEFS[id];if(!br||!br.reviews||!br.reviews.length)return'none';return br.reviews[br.reviews.length-1].health;}
+function totalReviews(){return Object.values(BRIEFS).reduce((a,b)=>a+(b.reviews?b.reviews.length:0),0);}
+function unreadNotifs(){return NOTIFS.filter(n=>!n.read).length;}
+function ownerBadge(o){
+  if(!o)return'';
+  let h='';
+  if(o.includes('Abel'))h+=`<span class="badge b-teal">Abel</span>`;
+  if(o.includes('Angela'))h+=`<span class="badge b-purple">Angela</span>`;
+  if(o.includes('Ross'))h+=`<span class="badge b-amber">Ross</span>`;
+  if(!h)h=`<span class="badge b-gray">${o}</span>`;
+  return h;
+}
+
+/* ══════════════════════ NOTIFICATIONS ══════════════════════ */
+function pushNotif(icon,text){
+  NOTIFS.unshift({id:Date.now(),icon,text,time:now(),read:false});
+  if(NOTIFS.length>50)NOTIFS=NOTIFS.slice(0,50);
+  store.save('gca_notifs',NOTIFS);
+  updateNotifBadge();
+  if(currentPage==='notifs')renderNotifs();
+}
+function updateNotifBadge(){
+  const u=unreadNotifs();
+  document.getElementById('nb-notif').textContent=u||'';
+  document.getElementById('tb-notif-count').textContent=u;
+  const badge=document.getElementById('tb-notif-badge');
+  if(badge)badge.style.display=u>0?'inline':'none';
+}
+async function clearNotifs(){NOTIFS=NOTIFS.map(n=>({...n,read:true}));await store.save('gca_notifs',NOTIFS);updateNotifBadge();renderNotifs();}
+function addTestNotif(){pushNotif('🔔','Test notification — in-app notifications are working.');if(currentPage==='notifs')renderNotifs();}
+
+/* ══════════════════════ NAV ══════════════════════ */
+function nav(id,el){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  const pg=document.getElementById('page-'+id);
+  if(pg)pg.classList.add('active');
+  if(el)el.classList.add('active');
+  currentPage=id;
+  const titles={dashboard:'Dashboard',notifs:'Notifications',notes:'Notes & Ideas',angela:'Angela\'s View',budget:'Budget',p0:'Phase 0 — Platform Migration',p1:'Phase 1 — SEO Foundations',p2:'Phase 2 — AIO Readiness',p3:'Phase 3 — GEO Content Programme',p4:'Phase 4 — Authority & Off-Site',p5:'Phase 5 — Engineering & Automation'};
+  document.getElementById('tb-title').textContent=titles[id]||id;
+  if(id.startsWith('p'))renderPhase(parseInt(id.replace('p','')));
+  if(id==='dashboard')renderDashboard();
+  if(id==='angela')renderAngela();
+  if(id==='notes')renderNotes();
+  if(id==='notifs'){NOTIFS=NOTIFS.map(n=>({...n,read:true}));store.save('gca_notifs',NOTIFS);updateNotifBadge();renderNotifs();}
+  closePopup();
+}
+function navToPhase(pid){const nis=document.querySelectorAll('.ni');const keys=['dashboard','notifs','notes','angela','budget','p0','p1','p2','p3','p4','p5'];const idx=keys.indexOf('p'+pid);if(idx>=0)nav('p'+pid,nis[idx]);}
+
+/* ══════════════════════ RENDER DASHBOARD ══════════════════════ */
+function renderDashboard(){
+  const tp=totalProg();const ap=activePhase();const focus=currentFocus();
+  document.getElementById('d-done').textContent=tp.done;
+  document.getElementById('d-pct').textContent=tp.pct+'%';
+  document.getElementById('d-phase').textContent='Ph '+ap.id;
+  document.getElementById('d-notes').textContent=NOTES.length;
+  document.getElementById('d-reviews').textContent=totalReviews();
+  document.getElementById('tb-done').textContent=tp.done;
+  document.getElementById('tb-act').textContent=tp.active;
+  document.getElementById('tb-total').textContent=tp.total;
+  if(startDate&&document.getElementById('sf-start'))document.getElementById('sf-start').textContent=startDate;
+  // Focus
+  const fEl=document.getElementById('dash-focus');
+  if(focus){fEl.innerHTML=`<div class="focus-box"><div class="focus-lbl">▶ Current Focus</div><div class="focus-title">Step ${focus.step.id} — ${focus.step.title}</div><div class="focus-sub">${focus.phase.title} · ${focus.step.owner}</div><div class="focus-outcome"><strong>Done when:</strong> ${focus.step.outcome}</div><button onclick="navToPhase(${focus.phase.id})" style="font-family:'IBM Plex Mono',monospace;font-size:11px;background:var(--teal);color:#fff;border:none;padding:6px 12px;border-radius:var(--r-sm);cursor:pointer;font-weight:600">Open Phase ${focus.phase.id} →</button></div>`;}
+  else{fEl.innerHTML=`<div class="focus-box"><div class="focus-lbl">✓ All tasks complete</div></div>`;}
+  // Pipeline
+  let ph='';
+  PHASES.forEach(p=>{
+    const prog=phaseProg(p);const col=PCOL[p.col]||'var(--teal)';
+    const health=phaseHealth(p.id);
+    const hdClass={green:'hd-green',amber:'hd-amber',red:'hd-red',none:'hd-none'}[health]||'hd-none';
+    const sb=prog.pct===100?`<span class="badge b-teal">Complete</span>`:prog.done>0?`<span class="badge b-amber">In Progress</span>`:`<span class="badge b-gray">Not Started</span>`;
+    const brief=BRIEFS[p.id];
+    const lastReview=brief&&brief.reviews&&brief.reviews.length?brief.reviews[brief.reviews.length-1]:null;
+    const reviewDue=prog.pct===100&&!lastReview?`<span class="pi-review-due">Review due</span>`:'';
+    ph+=`<div class="pi" onclick="navToPhase(${p.id})"><div class="pi-dot" style="background:${col}"></div><div class="pi-info"><div class="pi-name">Phase ${p.id} — ${p.title}</div><div class="pi-meta">${p.timeline} ${sb} <div class="health-dot ${hdClass}"></div> ${reviewDue}</div></div><div class="pi-prog"><div class="prog-label"><span>${prog.done}/${prog.total}</span><span>${prog.pct}%</span></div><div class="prog-track"><div class="prog-fill" style="width:${prog.pct}%;background:${col}"></div></div></div></div>`;
+  });
+  document.getElementById('dash-pipeline').innerHTML=ph;
+  updateNavBadges();
+}
+
+/* ══════════════════════ RENDER PHASE ══════════════════════ */
+function renderPhase(id){
+  const phase=PHASES[id];if(!phase)return;
+  const el=document.getElementById('page-p'+id);if(!el)return;
+  const prog=phaseProg(phase);const col=PCOL[phase.col]||'var(--teal)';
+  const brief=BRIEFS[id]||{};const incoming=brief.incoming||{};const reviews=brief.reviews||[];
+  const health=phaseHealth(id);
+
+  // Phase Brief section
+  const healthEmoji={green:'🟢',amber:'🟡',red:'🔴',none:'—'}[health]||'—';
+  let reviewsHtml='';
+  reviews.forEach(r=>{
+    const he={green:'🟢',amber:'🟡',red:'🔴'}[r.health]||'🔵';
+    reviewsHtml+=`<div class="review-entry"><div class="review-health">${he}</div><div class="review-body"><div class="review-date">${r.date}</div><div class="review-text">${r.text||'—'}${r.actions?`<br><strong>Actions:</strong> ${r.actions}`:''}</div></div></div>`;
+  });
+
+  // Tasks
+  let stepsHtml='';
+  phase.steps.forEach(step=>{
+    const st=getS(step.id);const isDone=st==='done';
+    const threadItems=THREADS[step.id]||[];const threadCount=threadItems.length;
+    let threadHtml=threadItems.map(m=>`<div class="thread-msg"><div class="tm-header"><div class="tm-author">${m.author}</div><div class="tm-time">${m.time}</div></div><div class="tm-text">${m.text}</div>${m.link?`<div class="tm-link">🔗 <a href="${m.link}" target="_blank" style="color:var(--blue)">${m.link}</a></div>`:''}</div>`).join('');
+    stepsHtml+=`
+    <div class="tc ${isDone?'tc-done':''}" id="tc-${step.id}">
+      <div class="tc-top">
+        <div class="tc-step">${step.id}</div>
+        <div class="tc-main">
+          <div class="tc-title">${step.title}</div>
+          <div class="tc-row">${ownerBadge(step.owner)}<span class="tc-hrs">${step.hrs} hrs</span>${step.cost&&step.cost!=='—'?`<span class="badge b-gray">${step.cost}</span>`:''}</div>
+          <div class="tc-controls">
+            <div class="status ${SC[st]}" onclick="openPopup('${step.id}',event)"><div class="sdot"></div>${SL[st]}</div>
+            <button class="tc-expand" onclick="toggleDetail('${step.id}')">details ↓</button>
+            <button class="tc-thread-btn" onclick="toggleThread('${step.id}')">💬 Thread${threadCount?` (${threadCount})`:''}</button>
+          </div>
+          <div class="tc-detail" id="td-${step.id}">
+            <div class="tc-desc">${step.desc}</div>
+            <div class="tc-outcome"><strong>Done when:</strong> ${step.outcome}</div>
+            <div class="tc-metrics ${isDone?'':''}"><strong>✓ Success Metrics Achieved:</strong> ${step.metrics}</div>
+          </div>
+        </div>
+      </div>
+      <div class="thread" id="th-${step.id}">
+        <div class="thread-label">Task Thread — suggestions, questions, follow-ups</div>
+        <div id="th-msgs-${step.id}">${threadHtml||'<div style="font-size:12px;color:var(--ink3);padding:4px 0">No messages yet.</div>'}</div>
+        <textarea class="thread-input" id="th-inp-${step.id}" placeholder="Add a comment, question, or follow-up…"></textarea>
+        <div class="thread-actions">
+          <button class="thread-send" onclick="sendThread('${step.id}')">Send</button>
+          <button class="thread-link-btn" onclick="attachLink('${step.id}')">+ Link</button>
+          <span class="ph-attach-note">File attachments: paste Google Drive link above <span class="badge b-placeholder">placeholder — files at migration</span></span>
+        </div>
+      </div>
+    </div>`;
+    // Show metrics if done
+    if(isDone){setTimeout(()=>{const m=document.querySelector(`#tc-${step.id} .tc-metrics`);if(m)m.style.display='block';},0);}
+  });
+
+  el.innerHTML=`
+  <div class="phase-brief">
+    <div class="pb-header">
+      <div class="pb-title">Phase Brief + Review Protocol ${health!=='none'?`— ${healthEmoji} ${health.charAt(0).toUpperCase()+health.slice(1)}`:''}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--purple-d)">Review cadence: ${phase.reviewCadence}</div>
+    </div>
+    <div class="pb-body">
+      <div class="pb-section">
+        <div class="pb-section-label">Incoming Brief — what changed in AI/SEO before this phase starts?</div>
+        <textarea class="pb-textarea" id="pb-incoming-${id}" placeholder="Document: landscape changes since last review, strategy confirmations, any step updates needed…">${incoming.text||''}</textarea>
+      </div>
+      <div class="pb-section">
+        <div class="pb-section-label">Strategy — what we intend to achieve in this phase</div>
+        <textarea class="pb-textarea" id="pb-strategy-${id}" placeholder="Restate the phase goal and approach in your own words…">${incoming.strategy||''}</textarea>
+      </div>
+      <div class="pb-section">
+        <div class="pb-section-label">Current state before this phase begins</div>
+        <textarea class="pb-textarea" id="pb-current-${id}" placeholder="What does GCA's search presence look like right now? Baseline numbers, known gaps…">${incoming.current||''}</textarea>
+      </div>
+    </div>
+    <div class="pb-signoff">
+      <div class="pb-signoff-label">${incoming.signoff?`✓ Angela signed off — ${incoming.signoff}`:'Angela sign-off required before phase work begins'}</div>
+      <button class="pb-btn pb-save" onclick="saveBrief(${id})">Save Brief</button>
+      ${!incoming.signoff?`<button class="pb-btn pb-save" style="background:var(--teal)" onclick="signoffBrief(${id})">Mark Angela Signed Off</button>`:`<span class="pb-btn pb-signed">Signed Off ✓</span>`}
+    </div>
+  </div>
+
+  <div class="ph-hd">
+    <div class="ph-hd-top" style="background:rgba(0,0,0,0.015)">
+      <div class="ph-num" style="background:${col}">P${phase.id}</div>
+      <div class="ph-hd-body">
+        <div class="ph-hd-title">${phase.title}</div>
+        <div class="ph-hd-meta"><span class="badge b-gray">${phase.timeline}</span><span class="badge b-gray">${phase.hrs}</span><span class="badge b-gray">${phase.cost}</span></div>
+        <div class="prog-wrap" style="margin-top:8px;margin-bottom:0">
+          <div class="prog-label"><span>${phase.outcomes}</span><span>${prog.done}/${prog.total} · ${prog.pct}%</span></div>
+          <div class="prog-track"><div class="prog-fill" style="width:${prog.pct}%;background:${col}"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="ph-gate"><strong>Phase Gate — must be true before next phase starts</strong>${phase.gate}</div>
+  </div>
+
+  <div class="sl">Steps — complete sequentially. One at a time.</div>
+  ${stepsHtml}
+
+  <div class="sl">Standing Reviews — completed phase health checks</div>
+  <div class="review-log">
+    ${reviewsHtml||'<div style="font-size:12px;color:var(--ink3);padding:4px 0">No reviews logged yet. Add first review when phase is complete or after each cadence period.</div>'}
+    <button class="add-review-btn" onclick="openReviewModal(${id})">+ Add Phase Review</button>
+  </div>`;
+
+  updateNavBadges();
+}
+
+/* ══════════════════════ PHASE BRIEF ══════════════════════ */
+async function saveBrief(id){
+  if(!BRIEFS[id])BRIEFS[id]={};
+  if(!BRIEFS[id].incoming)BRIEFS[id].incoming={};
+  BRIEFS[id].incoming.text=document.getElementById(`pb-incoming-${id}`).value;
+  BRIEFS[id].incoming.strategy=document.getElementById(`pb-strategy-${id}`).value;
+  BRIEFS[id].incoming.current=document.getElementById(`pb-current-${id}`).value;
+  await store.save('gca_briefs',BRIEFS);
+  pushNotif('📋',`Phase ${id} brief saved.`);
+}
+async function signoffBrief(id){
+  await saveBrief(id);
+  if(!BRIEFS[id])BRIEFS[id]={};
+  if(!BRIEFS[id].incoming)BRIEFS[id].incoming={};
+  BRIEFS[id].incoming.signoff=now();
+  await store.save('gca_briefs',BRIEFS);
+  pushNotif('✅',`Phase ${id} brief signed off by Angela. Work can begin.`);
+  renderPhase(id);
+}
+
+/* ══════════════════════ REVIEW MODAL ══════════════════════ */
+function openReviewModal(phaseId){activeReviewPhaseId=phaseId;activeReviewHealth='green';document.getElementById('review-modal').classList.add('open');document.getElementById('review-text').value='';document.getElementById('review-actions').value='';}
+function closeReviewModal(){document.getElementById('review-modal').classList.remove('open');}
+function setReviewHealth(h){activeReviewHealth=h;['green','amber','red'].forEach(x=>{const b=document.getElementById('rh-'+x);if(b)b.style.outline=x===h?'2px solid var(--teal)':'none';});}
+async function saveReview(){
+  const id=activeReviewPhaseId;if(id===null)return;
+  if(!BRIEFS[id])BRIEFS[id]={};
+  if(!BRIEFS[id].reviews)BRIEFS[id].reviews=[];
+  BRIEFS[id].reviews.push({date:now(),health:activeReviewHealth,text:document.getElementById('review-text').value,actions:document.getElementById('review-actions').value});
+  await store.save('gca_briefs',BRIEFS);
+  pushNotif({green:'🟢',amber:'🟡',red:'🔴'}[activeReviewHealth]||'📋',`Phase ${id} review logged — ${activeReviewHealth.toUpperCase()}`);
+  closeReviewModal();
+  updateNavBadges();
+  if(currentPage==='p'+id)renderPhase(id);
+  if(currentPage==='dashboard')renderDashboard();
+}
+
+/* ══════════════════════ TASK THREAD ══════════════════════ */
+async function sendThread(taskId){
+  const inp=document.getElementById(`th-inp-${taskId}`);if(!inp||!inp.value.trim())return;
+  if(!THREADS[taskId])THREADS[taskId]=[];
+  THREADS[taskId].push({author:'Abel',time:now(),text:inp.value.trim(),link:''});
+  inp.value='';
+  await store.save('gca_threads',THREADS);
+  pushNotif('💬',`Comment added to step ${taskId}`);
+  const phId=parseInt(taskId.split('.')[0]);renderPhase(phId);
+  // Re-open thread
+  setTimeout(()=>{const t=document.getElementById('th-'+taskId);if(t)t.classList.add('open');},50);
+}
+function attachLink(taskId){
+  const url=prompt('Paste a link (Google Drive, Dropbox, URL):');
+  if(!url)return;
+  if(!THREADS[taskId])THREADS[taskId]=[];
+  THREADS[taskId].push({author:'Abel',time:now(),text:'Shared a link:',link:url});
+  store.save('gca_threads',THREADS);
+  const phId=parseInt(taskId.split('.')[0]);renderPhase(phId);
+  setTimeout(()=>{const t=document.getElementById('th-'+taskId);if(t)t.classList.add('open');},50);
+}
+function toggleThread(taskId){const el=document.getElementById('th-'+taskId);if(el)el.classList.toggle('open');}
+
+/* ══════════════════════ STATUS POPUP ══════════════════════ */
+function openPopup(taskId,evt){
+  evt.stopPropagation();activeTaskId=taskId;
+  const popup=document.getElementById('spop');
+  const rect=evt.target.getBoundingClientRect();
+  popup.style.top=(rect.bottom+4+window.scrollY)+'px';
+  popup.style.left=rect.left+'px';
+  popup.classList.add('open');
+}
+function closePopup(){document.getElementById('spop').classList.remove('open');activeTaskId=null;}
+async function setStatus(st){
+  if(!activeTaskId)return;
+  const prev=getS(activeTaskId);
+  TASKS[activeTaskId]=st;
+  closePopup();
+  await store.save('gca_tasks',TASKS);
+  if(st==='done'&&prev!=='done'){const t=allTasks().find(x=>x.id===activeTaskId);if(t)pushNotif('✅',`Step ${activeTaskId} marked complete: ${t.title}`);}
+  if(st==='blocked'){const t=allTasks().find(x=>x.id===activeTaskId);if(t)pushNotif('🚨',`Step ${activeTaskId} marked BLOCKED: ${t.title}`);}
+  if(st==='review'){const t=allTasks().find(x=>x.id===activeTaskId);if(t)pushNotif('👀',`Step ${activeTaskId} awaiting Angela approval: ${t.title}`);}
+  const phId=parseInt(activeTaskId.split('.')[0]);
+  if(currentPage==='p'+phId)renderPhase(phId);
+  renderDashboard();
+  if(currentPage==='angela')renderAngela();
+  updateNavBadges();
+}
+function updateNavBadges(){
+  PHASES.forEach(p=>{
+    const nb=document.getElementById('nb-'+p.id);if(nb)nb.textContent=phaseProg(p).pct+'%';
+    const hd=document.getElementById('hd-'+p.id);
+    if(hd){const h=phaseHealth(p.id);hd.className='health-dot '+({'green':'hd-green','amber':'hd-amber','red':'hd-red','none':'hd-none'}[h]||'hd-none');}
+  });
+  document.getElementById('tb-done').textContent=totalProg().done;
+  document.getElementById('tb-act').textContent=totalProg().active;
+  document.getElementById('tb-total').textContent=totalProg().total;
+}
+
+/* ══════════════════════ TASK DETAIL ══════════════════════ */
+function toggleDetail(taskId){
+  const el=document.getElementById('td-'+taskId);if(!el)return;
+  el.classList.toggle('open');
+  const btn=el.closest('.tc-main').querySelector('.tc-expand');
+  if(btn)btn.textContent=el.classList.contains('open')?'details ↑':'details ↓';
+}
+
+/* ══════════════════════ NOTES ══════════════════════ */
+async function addNote(){
+  const txt=document.getElementById('note-input').value.trim();if(!txt)return;
+  const tag=document.getElementById('note-tag').value;
+  NOTES.unshift({id:Date.now(),text:txt,tag,time:now()});
+  document.getElementById('note-input').value='';
+  await store.save('gca_notes',NOTES);
+  pushNotif('📝',`Note added${tag!=='general'?` — tagged ${tag}`:''}`);
+  renderNotes();
+  renderDashboard();
+}
+async function deleteNote(id){NOTES=NOTES.filter(n=>n.id!==id);await store.save('gca_notes',NOTES);renderNotes();renderDashboard();}
+function renderNotes(){
+  const el=document.getElementById('notes-list');if(!el)return;
+  if(!NOTES.length){el.innerHTML='<div style="font-size:13px;color:var(--ink3);padding:16px 0;text-align:center;font-family:\'IBM Plex Mono\',monospace">No notes yet.</div>';return;}
+  el.innerHTML=NOTES.map(n=>`<div class="global-note"><div class="gn-header"><div class="gn-meta">${n.time}</div><div style="display:flex;align-items:center;gap:6px"><span class="gn-tag">${n.tag}</span><button class="gn-del" onclick="deleteNote(${n.id})">×</button></div></div><div class="gn-text">${n.text}</div></div>`).join('');
+}
+
+/* ══════════════════════ NOTIFICATIONS RENDER ══════════════════════ */
+function renderNotifs(){
+  const el=document.getElementById('notif-list');if(!el)return;
+  if(!NOTIFS.length){el.innerHTML='<div class="notif-empty">No notifications yet.</div>';return;}
+  el.innerHTML=NOTIFS.map(n=>`<div class="notif-item"><div class="notif-icon">${n.icon}</div><div class="notif-body"><div class="notif-text">${n.text}</div><div class="notif-time">${n.time}</div></div></div>`).join('');
+}
+
+/* ══════════════════════ ANGELA VIEW ══════════════════════ */
+function renderAngela(){
+  const el=document.getElementById('angela-content');if(!el)return;
+  const needsApproval=[],comingUp=[],done=[];
+  PHASES.forEach(phase=>{
+    phase.steps.forEach(step=>{
+      const st=getS(step.id);const inv=step.owner.includes('Angela');
+      if(inv&&st==='done')done.push({step,phase});
+      else if(inv&&st!=='done')needsApproval.push({step,phase,st});
+      else if(!inv&&st==='todo'&&comingUp.length<3)comingUp.push({step,phase});
+    });
+  });
+  let h='';
+  if(needsApproval.length){
+    h+=`<div class="sl">✏ Needs Your Involvement (${needsApproval.length})</div>`;
+    needsApproval.forEach(({step,phase,st})=>{h+=`<div class="av-task"><div class="av-icon" style="background:var(--purple-l);color:var(--purple-d)">A</div><div class="av-body"><div class="av-title">${step.title}</div><div class="av-phase">Phase ${phase.id} — Step ${step.id}</div><div class="av-action">${st==='review'?'Waiting for your approval':st==='active'?'In progress — your input may be needed':'Coming up — you will need to review this'}</div><div class="av-sla"><strong>What you\'re approving:</strong> ${step.outcome}</div></div><div class="status ${SC[st]}" style="flex-shrink:0">${SL[st]}</div></div>`;});
+  }
+  h+=`<div class="sl">Data You Need to Provide</div>
+  <div class="av-task"><div class="av-icon" style="background:var(--amber-l);color:var(--amber-d)">!</div><div class="av-body"><div class="av-title">Salary benchmarks and talent data (Step 3.5)</div><div class="av-phase">Phase 3 — GEO Content</div><div class="av-sla">When Phase 3 reaches Step 3.5, Abel needs: salary ranges for key roles in Kenya, Nigeria, South Africa, Ghana; candidate pipeline volumes; typical hiring timelines. Prepare in advance.</div></div></div>
+  <div class="av-task"><div class="av-icon" style="background:var(--amber-l);color:var(--amber-d)">!</div><div class="av-body"><div class="av-title">Media or podcast opportunity (Step 4.5)</div><div class="av-phase">Phase 4 — Authority</div><div class="av-sla">Angela leads on securing one podcast or media appearance. Categories: HR, international recruitment, African business, global remote work. Begin identifying during Phase 3.</div></div></div>`;
+  if(done.length){h+=`<div class="sl">✓ Your Contributions Complete (${done.length})</div>`;done.forEach(({step,phase})=>{h+=`<div class="av-task"><div class="av-icon done" style="background:var(--teal-l);color:var(--teal-d)">✓</div><div class="av-body"><div class="av-title">${step.title}</div><div class="av-phase">Phase ${phase.id} — Step ${step.id}</div></div></div>`;});}
+  h+=`<div class="divider"></div>
+  <div class="ib ib-purple"><strong>Review SLA:</strong> Abel delivers content for review with a 5-business-day response requested. Reply with: Approved / Approved with changes (listed) / Not approved (reason). Abel handles all implementation.</div>
+  <div class="ib ib-teal"><strong>Phase gate = invoice trigger:</strong> Abel invoices on delivery of the phase gate condition. You pay for outcomes, not hours.</div>`;
+  el.innerHTML=h;
+}
+
+/* ══════════════════════ UTILS ══════════════════════ */
+function now(){return new Date().toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});}
+
+document.addEventListener('click',e=>{if(!e.target.closest('.spop')&&!e.target.classList.contains('status'))closePopup();});
+document.addEventListener('click',e=>{if(e.target===document.getElementById('review-modal'))closeReviewModal();});
+
+/* ══════════════════════ INIT ══════════════════════ */
+async function init(){
+  await store.load();
+  renderDashboard();
+  updateNavBadges();
+  updateNotifBadge();
+  if(startDate&&document.getElementById('sf-start'))document.getElementById('sf-start').textContent=startDate;
+}
+init();
+</script>
+</body>
+</html>
