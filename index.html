@@ -5,6 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>GCA — Project Hub</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  (function() {
+    const theme = localStorage.getItem('gca_theme') || 'light';
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -14,12 +20,55 @@
   --paper:#f5f4ef;--paper2:#eceae2;
   --border:rgba(0,0,0,0.10);--r:12px;
 
+  /* Theme variables - default light */
+  --bg: var(--paper);
+  --text: var(--ink);
+  --text-muted: var(--ink2);
+  --text-dim: var(--ink3);
+  --card-bg: #ffffff;
+  --card-bg-hover: rgba(255, 255, 255, 0.95);
+  --card-border: var(--border);
+  --card-border-hover: rgba(0, 0, 0, 0.15);
+  --grid-color: rgba(0, 0, 0, 0.05);
+  --glow-opacity: 0.05;
+  --card-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  --card-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.06);
+  --tag-bg: var(--paper2);
+  --tag-text: var(--ink2);
+  --tag-border: var(--border);
+  --theme-btn-bg: #ffffff;
+  --theme-btn-hover: var(--paper2);
+  --gradient-1: var(--teal-d);
+  --gradient-2: var(--purple-d);
 }
+
+[data-theme="dark"] {
+  --bg: var(--ink);
+  --text: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.7);
+  --text-dim: rgba(255, 255, 255, 0.45);
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-bg-hover: rgba(255, 255, 255, 0.07);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-border-hover: rgba(255, 255, 255, 0.14);
+  --grid-color: rgba(255, 255, 255, 0.03);
+  --glow-opacity: 0.12;
+  --card-shadow: none;
+  --card-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.3);
+  --tag-bg: rgba(255, 255, 255, 0.06);
+  --tag-text: rgba(255, 255, 255, 0.4);
+  --tag-border: rgba(255, 255, 255, 0.07);
+  --theme-btn-bg: rgba(255, 255, 255, 0.08);
+  --theme-btn-hover: rgba(255, 255, 255, 0.12);
+  --gradient-1: var(--teal);
+  --gradient-2: var(--purple);
+}
+
 html,body{min-height:100vh}
 body{
   font-family:'DM Sans',sans-serif;
-  background:var(--ink);
-  color:#fff;
+  background:var(--bg);
+  color:var(--text);
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -35,8 +84,8 @@ body::before{
   content:'';
   position:absolute;inset:0;
   background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
   background-size:48px 48px;
   pointer-events:none;
 }
@@ -45,8 +94,9 @@ body::after{
   position:absolute;
   top:-200px;left:50%;transform:translateX(-50%);
   width:600px;height:600px;
-  background:radial-gradient(circle, rgba(29,158,117,0.12) 0%, transparent 70%);
+  background:radial-gradient(circle, rgba(29, 158, 117, var(--glow-opacity)) 0%, transparent 70%);
   pointer-events:none;
+  transition: opacity 0.3s;
 }
 
 .hub{
@@ -77,7 +127,7 @@ body::after{
   letter-spacing:-0.02em;
 }
 .hub-title span{
-  background:linear-gradient(135deg,var(--teal),var(--purple));
+  background:linear-gradient(135deg,var(--gradient-1),var(--gradient-2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   background-clip:text;
 }
@@ -88,7 +138,7 @@ body::after{
 }
 .hub-sub{
   font-size:15px;
-  color:rgba(255,255,255,0.45);
+  color:var(--text-muted);
   line-height:1.6;
   max-width:440px;
   margin:0 auto;
@@ -104,17 +154,18 @@ body::after{
 @media(max-width:580px){.apps{grid-template-columns:1fr}}
 
 .app-card{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
+  background:var(--card-bg);
+  border:1px solid var(--card-border);
   border-radius:var(--r);
   padding:28px 24px;
   cursor:pointer;
   text-decoration:none;
-  color:#fff;
+  color:var(--text);
   display:block;
-  transition:all 0.18s;
+  transition:all 0.18s, background 0.3s, border-color 0.3s;
   position:relative;
   overflow:hidden;
+  box-shadow:var(--card-shadow);
 }
 .app-card::before{
   content:'';
@@ -127,10 +178,10 @@ body::after{
 .app-card.teal::before{background:linear-gradient(90deg,var(--teal),transparent)}
 .app-card.purple::before{background:linear-gradient(90deg,var(--purple),transparent)}
 .app-card:hover{
-  background:rgba(255,255,255,0.07);
-  border-color:rgba(255,255,255,0.14);
+  background:var(--card-bg-hover);
+  border-color:var(--card-border-hover);
   transform:translateY(-2px);
-  box-shadow:0 12px 32px rgba(0,0,0,0.3);
+  box-shadow:var(--card-shadow-hover);
 }
 .app-card:hover::before{opacity:1}
 .app-card:active{transform:translateY(0)}
@@ -161,7 +212,7 @@ body::after{
 }
 .app-desc{
   font-size:13px;
-  color:rgba(255,255,255,0.45);
+  color:var(--text-muted);
   line-height:1.6;
   margin-bottom:18px;
 }
@@ -174,9 +225,9 @@ body::after{
   font-size:10px;font-weight:500;
   padding:3px 7px;
   border-radius:4px;
-  background:rgba(255,255,255,0.06);
-  color:rgba(255,255,255,0.4);
-  border:1px solid rgba(255,255,255,0.07);
+  background:var(--tag-bg);
+  color:var(--tag-text);
+  border:1px solid var(--tag-border);
 }
 .app-cta{
   display:flex;align-items:center;gap:6px;
@@ -192,20 +243,20 @@ body::after{
   text-align:center;
   font-family:'DM Mono',monospace;
   font-size:11px;
-  color:rgba(255,255,255,0.18);
+  color:var(--text-dim);
   line-height:1.8;
   margin-bottom:24px;
 }
-.hub-footer a{color:rgba(255,255,255,0.3);text-decoration:none}
-.hub-footer a:hover{color:rgba(255,255,255,0.5)}
+.hub-footer a{color:var(--text-muted);text-decoration:none}
+.hub-footer a:hover{color:var(--text)}
 
 /* Divider */
 .hub-divider{
   display:flex;align-items:center;gap:14px;
   margin-bottom:20px;
 }
-.hd-line{flex:1;height:1px;background:rgba(255,255,255,0.06)}
-.hd-text{font-family:'DM Mono',monospace;font-size:10px;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap}
+.hd-line{flex:1;height:1px;background:var(--card-border)}
+.hd-text{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-dim);text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap}
 
 /* ── PAGE SWITCHER ── */
 .page-switcher{
@@ -266,6 +317,11 @@ body::after{
   .ps-icon{font-size:22px}
   .ps-sep{width:1px;height:28px}
 }
+
+[data-theme="dark"] .sun-icon { display: inline-block; }
+[data-theme="dark"] .moon-icon { display: none; }
+.sun-icon { display: none; }
+.moon-icon { display: inline-block; }
 </style>
 </head>
 <body>
@@ -321,7 +377,7 @@ body::after{
 <!-- PAGE SWITCHER -->
 <nav class="page-switcher" role="navigation" aria-label="Switch page">
   <a class="ps-btn ps-active ps-teal" href="index.html">
-    <span class="ps-icon">🏠</span> Hub
+    <span class="ps-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></span> Hub
   </a>
   <div class="ps-sep"></div>
   <a class="ps-btn" href="gca_seo_geo_roadmap.html">
@@ -329,8 +385,22 @@ body::after{
   </a>
   <div class="ps-sep"></div>
   <a class="ps-btn" href="gca_project_workspace_v2.html">
-    <span class="ps-icon">⚙️</span> Workspace
+    <span class="ps-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span> Workspace
+  </a>
+  <div class="ps-sep"></div>
+  <a id="theme-toggle" class="ps-btn" aria-label="Toggle theme" style="cursor: pointer;">
+    <span class="ps-icon sun-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg></span>
+    <span class="ps-icon moon-icon"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg></span>
+    Mode
   </a>
 </nav>
+<script>
+  document.getElementById('theme-toggle').addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('gca_theme', newTheme);
+  });
+</script>
 </body>
 </html>
